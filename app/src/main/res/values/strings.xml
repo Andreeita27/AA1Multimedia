@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">62RosasTattoo</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_showroom">Showroom</string>
+    <string name="menu_professionals">Professionals</string>
+    <string name="menu_saved">Saved tattoos</string>
+    <string name="menu_map">Conventions map</string>
+    <string name="menu_client">New client</string>
+    <string name="home_title">62 Rosas Tattoo</string>
+    <string name="style">Style</string>
+    <string name="description">Description</string>
+
+</resources>

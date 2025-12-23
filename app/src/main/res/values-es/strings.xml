@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_showroom">Showroom</string>
+    <string name="menu_professionals">Tatuadores</string>
+    <string name="menu_saved">Guardados</string>
+    <string name="menu_map">Mapa de convenciones</string>
+    <string name="menu_client">Alta cliente</string>
+    <string name="home_title">62 Rosas Tattoo</string>
+    <string name="style">Estilo</string>
+    <string name="description">Descripcion</string>
+
+</resources>
