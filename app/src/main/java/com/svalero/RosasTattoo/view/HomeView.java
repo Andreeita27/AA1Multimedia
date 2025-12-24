@@ -21,7 +21,7 @@ public class HomeView extends BaseView {
                 startActivity(new Intent(this, ProfessionalListView.class)));
 
         findViewById(R.id.btnSaved).setOnClickListener(v ->
-                startActivity(new Intent(this, SavedTattooListView.class)));
+                startActivity(new Intent(this, FavoriteTattooListView.class)));
 
         findViewById(R.id.btnMap).setOnClickListener(v ->
                 startActivity(new Intent(this, ConventionMapView.class)));
@@ -49,8 +49,8 @@ public class HomeView extends BaseView {
             startActivity(new Intent(this, ProfessionalListView.class));
             return true;
 
-        } else if (id == R.id.menu_saved) {
-            startActivity(new Intent(this, SavedTattooListView.class));
+        } else if (id == R.id.menu_favorite) {
+            startActivity(new Intent(this, FavoriteTattooListView.class));
             return true;
 
         } else if (id == R.id.menu_map) {

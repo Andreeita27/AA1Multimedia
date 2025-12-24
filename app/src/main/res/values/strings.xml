@@ -9,5 +9,6 @@
     <string name="home_title">62 Rosas Tattoo</string>
     <string name="style">Style</string>
     <string name="description">Description</string>
+    <string name="fav">Favorite</string>
 
 </resources>

@@ -15,7 +15,7 @@
         android:theme="@style/Theme._62RosasTattoo"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.SavedTattooListView"
+            android:name=".view.FavoriteTattooListView"
             android:exported="false" />
         <activity
             android:name=".view.BaseView"

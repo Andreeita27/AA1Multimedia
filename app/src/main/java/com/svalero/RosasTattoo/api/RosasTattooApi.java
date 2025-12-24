@@ -8,7 +8,7 @@ public class RosasTattooApi {
     public static RosasTattooApiInterface buildInstance() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/") // Emulador -> tu PC
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

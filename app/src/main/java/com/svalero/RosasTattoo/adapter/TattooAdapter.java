@@ -3,6 +3,7 @@ package com.svalero.RosasTattoo.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.svalero.RosasTattoo.R;
+import com.svalero.RosasTattoo.db.AppDatabase;
+import com.svalero.RosasTattoo.db.FavoriteTattoo;
 import com.svalero.RosasTattoo.domain.Tattoo;
 
 import java.util.ArrayList;
@@ -19,6 +22,11 @@ import java.util.List;
 public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooViewHolder> {
 
     private List<Tattoo> tattoos = new ArrayList<>();
+    private AppDatabase db;
+
+    public TattooAdapter(AppDatabase db) {
+        this.db = db;
+    }
 
     public void setData(List<Tattoo> tattoos) {
         this.tattoos = tattoos;
@@ -29,7 +37,7 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
     @Override
     public TattooViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_tattoo_detail_view, parent, false);
+                .inflate(R.layout.tattoo_item, parent, false);
         return new TattooViewHolder(view);
     }
 
@@ -44,6 +52,29 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
                 .load(tattoo.getImageUrl())
                 .centerCrop()
                 .into(holder.ivTattoo);
+
+        holder.cbFavorite.setOnCheckedChangeListener(null);
+
+        boolean isFav = db.favoriteTattooDao()
+                .getByTattooId(tattoo.getId()) != null;
+
+        holder.cbFavorite.setChecked(isFav);
+
+        holder.cbFavorite.setOnCheckedChangeListener((buttonView, checked) -> {
+            if (checked) {
+                FavoriteTattoo existing =
+                        db.favoriteTattooDao().getByTattooId(tattoo.getId());
+
+                if (existing == null) {
+                    FavoriteTattoo fav = new FavoriteTattoo();
+                    fav.setTattooId(tattoo.getId());
+                    fav.setInstagram(false);
+                    db.favoriteTattooDao().insert(fav);
+                }
+            } else {
+                db.favoriteTattooDao().deleteByTattooId(tattoo.getId());
+            }
+        });
     }
 
     @Override
@@ -54,9 +85,11 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
     static class TattooViewHolder extends RecyclerView.ViewHolder {
         ImageView ivTattoo;
         TextView tvStyle, tvDesc;
+        CheckBox cbFavorite;
 
         TattooViewHolder(@NonNull View itemView) {
             super(itemView);
+            cbFavorite = itemView.findViewById(R.id.cbFavorite);
             ivTattoo = itemView.findViewById(R.id.ivTattoo);
             tvStyle = itemView.findViewById(R.id.tvStyle);
             tvDesc = itemView.findViewById(R.id.tvDesc);
