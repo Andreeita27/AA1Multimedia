@@ -1,20 +1,113 @@
 package com.svalero.RosasTattoo.view;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
+import com.bumptech.glide.Glide;
 import com.svalero.RosasTattoo.R;
+import com.svalero.RosasTattoo.contract.TattooDetailContract;
+import com.svalero.RosasTattoo.presenter.TattooDetailPresenter;
 
-public class TattooDetailView extends BaseView {
+public class TattooDetailView extends BaseView implements TattooDetailContract.View {
+
+    public static final String EXTRA_TATTOO_ID = "tattoo_id";
+    public static final String EXTRA_TATTOO_STYLE = "tattoo_style";
+    public static final String EXTRA_TATTOO_DESC = "tattoo_desc";
+    public static final String EXTRA_TATTOO_IMAGE = "tattoo_image";
+
+    private ImageView ivTattoo;
+    private TextView tvStyle;
+    private TextView tvDesc;
+
+    private long tattooId;
+    private String style;
+    private String desc;
+    private String imageUrl;
+
+    private TattooDetailContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tattoo_detail_view);
 
+        ivTattoo = findViewById(R.id.ivTattoo);
+        tvStyle = findViewById(R.id.tvStyle);
+        tvDesc = findViewById(R.id.tvDesc);
+
+        presenter = new TattooDetailPresenter(this);
+
+        Intent intent = getIntent();
+        tattooId = intent.getLongExtra(EXTRA_TATTOO_ID, -1);
+        style = intent.getStringExtra(EXTRA_TATTOO_STYLE);
+        desc = intent.getStringExtra(EXTRA_TATTOO_DESC);
+        imageUrl = intent.getStringExtra(EXTRA_TATTOO_IMAGE);
+
+        tvStyle.setText(style);
+        tvDesc.setText(desc);
+
+        Glide.with(this)
+                .load(imageUrl)
+                .centerCrop()
+                .into(ivTattoo);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Activa Edit/Borrar
+        MenuItem edit = menu.findItem(R.id.menu_edit_tattoo);
+        MenuItem delete = menu.findItem(R.id.menu_delete_tattoo);
+
+        if (edit != null) edit.setVisible(true);
+        if (delete != null) delete.setVisible(true);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.menu_delete_tattoo) {
+            showDeleteDialog();
+            return true;
+        }
+
+        if (id == R.id.menu_edit_tattoo) {
+            Toast.makeText(this, "Editar (pendiente)", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.confirm_delete))
+                .setPositiveButton(getString(R.string.delete), (dialog, which) -> presenter.deleteTattoo(tattooId))
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void closeView() {
+        finish();
     }
 }

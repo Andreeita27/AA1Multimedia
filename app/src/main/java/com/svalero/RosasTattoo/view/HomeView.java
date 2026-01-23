@@ -27,41 +27,4 @@ public class HomeView extends BaseView {
                 startActivity(new Intent(this, ConventionMapView.class)));
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_home) {
-            return true;
-
-        } else if (id == R.id.menu_showroom) {
-            startActivity(new Intent(this, TattooListView.class));
-            return true;
-
-        } else if (id == R.id.menu_professionals) {
-            startActivity(new Intent(this, ProfessionalListView.class));
-            return true;
-
-        } else if (id == R.id.menu_favorite) {
-            startActivity(new Intent(this, FavoriteTattooListView.class));
-            return true;
-
-        } else if (id == R.id.menu_map) {
-            startActivity(new Intent(this, ConventionMapView.class));
-            return true;
-
-        } else if (id == R.id.menu_client) {
-            startActivity(new Intent(this, RegisterClientView.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -5,56 +5,55 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.adapter.TattooAdapter;
-import com.svalero.RosasTattoo.api.RosasTattooApi;
-import com.svalero.RosasTattoo.api.RosasTattooApiInterface;
+import com.svalero.RosasTattoo.contract.TattooListContract;
 import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.domain.Tattoo;
+import com.svalero.RosasTattoo.presenter.TattooListPresenter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class TattooListView extends BaseView implements TattooListContract.View {
 
-public class TattooListView extends BaseView {
+    private RecyclerView recyclerView;
+    private TattooAdapter tattooAdapter;
+
+    private TattooListContract.Presenter presenter;
+
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tattoo_list_view);
 
-        RecyclerView rv = findViewById(R.id.rvTattoos);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = findViewById(R.id.rvTattoos);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        AppDatabase db = Room.databaseBuilder(
-                this,
-                AppDatabase.class,
-                "favorites_db"
-        ).allowMainThreadQueries().build();
+        db = AppDatabase.getInstance(this);
 
-        TattooAdapter adapter = new TattooAdapter(db);
-        rv.setAdapter(adapter);
+        tattooAdapter = new TattooAdapter(db);
+        recyclerView.setAdapter(tattooAdapter);
 
-        RosasTattooApiInterface api = RosasTattooApi.buildInstance();
-        api.getTattoos().enqueue(new Callback<List<Tattoo>>() {
-            @Override
-            public void onResponse(Call<List<Tattoo>> call, Response<List<Tattoo>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    adapter.setData(response.body());
-                } else {
-                    Toast.makeText(TattooListView.this, "HTTP error: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
+        presenter = new TattooListPresenter(this);
+        presenter.loadTattoos();
+    }
 
-            @Override
-            public void onFailure(Call<List<Tattoo>> call, Throwable t) {
-                Toast.makeText(TattooListView.this, "Connection error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+    @Override
+    public void showTattoos(List<Tattoo> tattoos) {
+        tattooAdapter.setData(tattoos);
+    }
 
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
