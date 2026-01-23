@@ -75,6 +75,17 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
                 db.favoriteTattooDao().deleteByTattooId(tattoo.getId());
             }
         });
+        holder.itemView.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(holder.itemView.getContext(),
+                    com.svalero.RosasTattoo.view.TattooDetailView.class);
+
+            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
+            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
+            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
+            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
+
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override

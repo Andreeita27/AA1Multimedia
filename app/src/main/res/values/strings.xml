@@ -10,5 +10,19 @@
     <string name="style">Style</string>
     <string name="description">Description</string>
     <string name="fav">Favorite</string>
+    <string name="menu_add_tattoo">Add Tattoo</string>
+    <string name="menu_edit_tattoo">Edit</string>
+    <string name="menu_delete_tattoo">Delete</string>
+    <string name="confirm_delete">Are you sure you want to delete this tattoo?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="name_client">Name</string>
+    <string name="surname_client">Surname</string>
+    <string name="email_client" translatable="false">Email</string>
+    <string name="phone_client">Phone</string>
+    <string name="birth_client">Birth date</string>
+    <string name="showfoto_client">Show photo</string>
+    <string name="register_client">Register client</string>
+
 
 </resources>

@@ -32,4 +32,20 @@
         android:title="@string/menu_client"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_add_tattoo"
+        android:title="@string/menu_add_tattoo"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_edit_tattoo"
+        android:title="@string/menu_edit_tattoo"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_delete_tattoo"
+        android:title="@string/menu_delete_tattoo"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>
