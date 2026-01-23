@@ -16,5 +16,11 @@
     <string name="confirm_delete">¿Seguro que quieres borrar este tatuaje?</string>
     <string name="delete">Borrar</string>
     <string name="cancel">Cancelar</string>
+    <string name="name_client">Nombre</string>
+    <string name="surname_client">Apellidos</string>
+    <string name="phone_client">Teléfono</string>
+    <string name="birth_client">Día de nacimiento</string>
+    <string name="showfoto_client">Mostrar foto</string>
+    <string name="register_client">Registrar cliente</string>
 
 </resources>

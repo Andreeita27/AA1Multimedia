@@ -1,5 +1,6 @@
 package com.svalero.RosasTattoo.api;
 
+import com.svalero.RosasTattoo.domain.Client;
 import com.svalero.RosasTattoo.domain.Tattoo;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public interface RosasTattooApiInterface {
 
     @GET("tattoos")
     Call<List<Tattoo>> getTattoos();
+
+    @POST("clients")
+    Call<Client> registerClient(@Body Client client);
 
     @POST("tattoos")
     Call<Tattoo> registerTattoo(@Body Tattoo tattoo);
