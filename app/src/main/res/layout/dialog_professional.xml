@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/etProfessionalName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_professional" />
+
+        <EditText
+            android:id="@+id/etProfessionalBirthDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/birth_professional" />
+
+        <EditText
+            android:id="@+id/etProfessionalDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description_professional" />
+
+        <EditText
+            android:id="@+id/etProfessionalPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/photo_professional" />
+
+        <EditText
+            android:id="@+id/etProfessionalYears"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/experience_professional"
+            android:inputType="number" />
+
+        <CheckBox
+            android:id="@+id/cbProfessionalBooksOpened"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/books_opened" />
+
+    </LinearLayout>
+</ScrollView>

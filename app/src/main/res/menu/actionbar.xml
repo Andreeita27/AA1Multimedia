@@ -48,4 +48,10 @@
         android:visible="false"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_add_professional"
+        android:title="@string/menu_add_professional"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+
 </menu>

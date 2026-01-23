@@ -21,8 +21,16 @@
     <string name="email_client" translatable="false">Email</string>
     <string name="phone_client">Phone</string>
     <string name="birth_client">Birth date</string>
-    <string name="showfoto_client">Show photo</string>
-    <string name="register_client">Register client</string>
-
+    <string name="showphoto_client">Show photo</string>
+    <string name="register_client">Add client</string>
+    <string name="menu_add_professional">Add Professional</string>
+    <string name="edit_professional">Edit</string>
+    <string name="delete_professional">Delete</string>
+    <string name="name_professional">Name</string>
+    <string name="birth_professional">Birthdate</string>
+    <string name="description_professional">Description</string>
+    <string name="photo_professional">Photo URL</string>
+    <string name="experience_professional">Years of experience</string>
+    <string name="books_opened">Books opened</string>
 
 </resources>
