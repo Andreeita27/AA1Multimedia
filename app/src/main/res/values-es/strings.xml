@@ -36,5 +36,7 @@
     <string name="professional_option">Profesional</string>
     <string name="tattoo_image">Sube Imagen</string>
     <string name="add_tattoo">Añadir tatuaje</string>
+    <string name="edit_tattoo">Editar</string>
+    <string name="delete_tattoo">Eliminar</string>
 
 </resources>

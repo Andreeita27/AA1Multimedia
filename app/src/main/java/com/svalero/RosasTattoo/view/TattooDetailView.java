@@ -5,8 +5,7 @@ import com.svalero.RosasTattoo.db.AppDatabase;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +25,8 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
     private ImageView ivTattoo;
     private TextView tvStyle;
     private TextView tvDesc;
+    private ImageButton btnEditTattoo;
+    private ImageButton btnDeleteTattoo;
 
     private long tattooId;
     private String style;
@@ -42,6 +43,14 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         ivTattoo = findViewById(R.id.ivTattoo);
         tvStyle = findViewById(R.id.tvStyle);
         tvDesc = findViewById(R.id.tvDesc);
+        btnEditTattoo = findViewById(R.id.btnEditTattoo);
+        btnDeleteTattoo = findViewById(R.id.btnDeleteTattoo);
+
+        btnDeleteTattoo.setOnClickListener(v -> showDeleteDialog());
+
+        btnEditTattoo.setOnClickListener(v ->
+                Toast.makeText(this, "Editar", Toast.LENGTH_SHORT).show()
+        );
 
         presenter = new TattooDetailPresenter(this);
 
@@ -58,36 +67,6 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                 .load(imageUrl)
                 .centerCrop()
                 .into(ivTattoo);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // Activa Edit/Borrar
-        MenuItem edit = menu.findItem(R.id.menu_edit_tattoo);
-        MenuItem delete = menu.findItem(R.id.menu_delete_tattoo);
-
-        if (edit != null) edit.setVisible(true);
-        if (delete != null) delete.setVisible(true);
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.menu_delete_tattoo) {
-            showDeleteDialog();
-            return true;
-        }
-
-        if (id == R.id.menu_edit_tattoo) {
-            Toast.makeText(this, "Editar", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void showDeleteDialog() {
