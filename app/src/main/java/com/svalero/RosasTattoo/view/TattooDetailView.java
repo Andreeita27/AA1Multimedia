@@ -1,5 +1,7 @@
 package com.svalero.RosasTattoo.view;
 
+import com.svalero.RosasTattoo.db.AppDatabase;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,7 +83,7 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         }
 
         if (id == R.id.menu_edit_tattoo) {
-            Toast.makeText(this, "Editar (pendiente)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Editar", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -99,6 +101,13 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+        if (message != null && message.toLowerCase().contains("elim")) {
+            AppDatabase db = AppDatabase.getInstance(this);
+            db.favoriteTattooDao().deleteByTattooId(tattooId);
+
+            finish();
+        }
     }
 
     @Override

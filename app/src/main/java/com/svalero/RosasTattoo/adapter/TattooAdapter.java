@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,21 +61,8 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
 
         holder.cbFavorite.setChecked(isFav);
 
-        holder.cbFavorite.setOnCheckedChangeListener((buttonView, checked) -> {
-            if (checked) {
-                FavoriteTattoo existing =
-                        db.favoriteTattooDao().getByTattooId(tattoo.getId());
+        attachFavoriteListener(tattoo, holder);
 
-                if (existing == null) {
-                    FavoriteTattoo fav = new FavoriteTattoo();
-                    fav.setTattooId(tattoo.getId());
-                    fav.setInstagram(false);
-                    db.favoriteTattooDao().insert(fav);
-                }
-            } else {
-                db.favoriteTattooDao().deleteByTattooId(tattoo.getId());
-            }
-        });
         holder.itemView.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(holder.itemView.getContext(),
                     com.svalero.RosasTattoo.view.TattooDetailView.class);
@@ -85,6 +73,35 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
             intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
 
             holder.itemView.getContext().startActivity(intent);
+        });
+    }
+
+    private void attachFavoriteListener(Tattoo tattoo, TattooViewHolder holder) {
+        holder.cbFavorite.setOnCheckedChangeListener((buttonView, checked) -> {
+
+            if (tattoo.getId() <= 0) {
+                holder.cbFavorite.setOnCheckedChangeListener(null);
+                holder.cbFavorite.setChecked(false);
+
+                attachFavoriteListener(tattoo, holder);
+
+                Toast.makeText(holder.itemView.getContext(),
+                        "Este tattoo aún no tiene ID (recarga la lista) para guardarlo en favoritos",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (checked) {
+                FavoriteTattoo existing = db.favoriteTattooDao().getByTattooId(tattoo.getId());
+                if (existing == null) {
+                    FavoriteTattoo fav = new FavoriteTattoo();
+                    fav.setTattooId(tattoo.getId());
+                    fav.setInstagram(false);
+                    db.favoriteTattooDao().insert(fav);
+                }
+            } else {
+                db.favoriteTattooDao().deleteByTattooId(tattoo.getId());
+            }
         });
     }
 

@@ -5,9 +5,20 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "favorite_tattoo")
 public class FavoriteTattoo {
-    @PrimaryKey
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
     private long tattooId;
     private boolean instagram;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getTattooId() {
         return tattooId;

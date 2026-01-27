@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.adapter.FavoriteTattooAdapter;
@@ -23,9 +22,7 @@ public class FavoriteTattooListView extends BaseView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_tattoo_list_view);
 
-        db = Room.databaseBuilder(this, AppDatabase.class, "favorites_db")
-                .allowMainThreadQueries()
-                .build();
+        db = AppDatabase.getInstance(this);
 
         RecyclerView rv = findViewById(R.id.rvFavorites);
 
