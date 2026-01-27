@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +15,7 @@ import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.db.FavoriteTattoo;
 import com.svalero.RosasTattoo.domain.Tattoo;
+import com.svalero.RosasTattoo.view.TattooDetailView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,38 +61,11 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
 
         holder.cbFavorite.setChecked(isFav);
 
-        attachFavoriteListener(tattoo, holder);
-
-        holder.itemView.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(holder.itemView.getContext(),
-                    com.svalero.RosasTattoo.view.TattooDetailView.class);
-
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
-
-            holder.itemView.getContext().startActivity(intent);
-        });
-    }
-
-    private void attachFavoriteListener(Tattoo tattoo, TattooViewHolder holder) {
         holder.cbFavorite.setOnCheckedChangeListener((buttonView, checked) -> {
-
-            if (tattoo.getId() <= 0) {
-                holder.cbFavorite.setOnCheckedChangeListener(null);
-                holder.cbFavorite.setChecked(false);
-
-                attachFavoriteListener(tattoo, holder);
-
-                Toast.makeText(holder.itemView.getContext(),
-                        "Este tattoo aún no tiene ID (recarga la lista) para guardarlo en favoritos",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             if (checked) {
-                FavoriteTattoo existing = db.favoriteTattooDao().getByTattooId(tattoo.getId());
+                FavoriteTattoo existing =
+                        db.favoriteTattooDao().getByTattooId(tattoo.getId());
+
                 if (existing == null) {
                     FavoriteTattoo fav = new FavoriteTattoo();
                     fav.setTattooId(tattoo.getId());
@@ -102,6 +75,27 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
             } else {
                 db.favoriteTattooDao().deleteByTattooId(tattoo.getId());
             }
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(
+                    holder.itemView.getContext(),
+                    TattooDetailView.class
+            );
+
+            // básicos
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
+            intent.putExtra(TattooDetailView.EXTRA_CLIENT_ID, tattoo.getClientId());
+            intent.putExtra(TattooDetailView.EXTRA_PROFESSIONAL_ID, tattoo.getProfessionalId());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_DATE, tattoo.getTattooDate());
+            intent.putExtra(TattooDetailView.EXTRA_SESSIONS, tattoo.getSessions());
+            intent.putExtra(TattooDetailView.EXTRA_COVERUP, tattoo.isCoverUp());
+            intent.putExtra(TattooDetailView.EXTRA_COLOR, tattoo.isColor());
+
+            holder.itemView.getContext().startActivity(intent);
         });
     }
 

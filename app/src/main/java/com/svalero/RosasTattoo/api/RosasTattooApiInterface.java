@@ -40,6 +40,9 @@ public interface RosasTattooApiInterface {
     @POST("tattoos")
     Call<Tattoo> registerTattoo(@Body Tattoo tattoo);
 
+    @PUT("tattoos/{id}")
+    Call<Tattoo> updateTattoo(@Path("id") long id, @Body Tattoo tattoo);
+
     @DELETE("tattoos/{id}")
     Call<Void> deleteTattoo(@Path("id") long id);
 }
