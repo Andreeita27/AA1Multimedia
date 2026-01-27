@@ -1,10 +1,13 @@
 package com.svalero.RosasTattoo.view;
 
+import com.svalero.RosasTattoo.db.AppDatabase;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.contract.TattooDetailContract;
+import com.svalero.RosasTattoo.domain.Tattoo;
 import com.svalero.RosasTattoo.presenter.TattooDetailPresenter;
 
 public class TattooDetailView extends BaseView implements TattooDetailContract.View {
@@ -21,14 +25,32 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
     public static final String EXTRA_TATTOO_DESC = "tattoo_desc";
     public static final String EXTRA_TATTOO_IMAGE = "tattoo_image";
 
+    public static final String EXTRA_CLIENT_ID = "client_id";
+    public static final String EXTRA_PROFESSIONAL_ID = "professional_id";
+    public static final String EXTRA_TATTOO_DATE = "tattoo_date";
+
+    public static final String EXTRA_SESSIONS = "sessions";
+    public static final String EXTRA_COVERUP = "coverup";
+    public static final String EXTRA_COLOR = "color";
+
     private ImageView ivTattoo;
     private TextView tvStyle;
     private TextView tvDesc;
+    private ImageButton btnEditTattoo;
+    private ImageButton btnDeleteTattoo;
 
     private long tattooId;
     private String style;
     private String desc;
     private String imageUrl;
+
+    private long clientId;
+    private long professionalId;
+    private String tattooDate;
+
+    private int sessions;
+    private boolean coverUp;
+    private boolean color;
 
     private TattooDetailContract.Presenter presenter;
 
@@ -40,6 +62,8 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         ivTattoo = findViewById(R.id.ivTattoo);
         tvStyle = findViewById(R.id.tvStyle);
         tvDesc = findViewById(R.id.tvDesc);
+        btnEditTattoo = findViewById(R.id.btnEditTattoo);
+        btnDeleteTattoo = findViewById(R.id.btnDeleteTattoo);
 
         presenter = new TattooDetailPresenter(this);
 
@@ -48,6 +72,12 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         style = intent.getStringExtra(EXTRA_TATTOO_STYLE);
         desc = intent.getStringExtra(EXTRA_TATTOO_DESC);
         imageUrl = intent.getStringExtra(EXTRA_TATTOO_IMAGE);
+        clientId = intent.getLongExtra(EXTRA_CLIENT_ID, -1);
+        professionalId = intent.getLongExtra(EXTRA_PROFESSIONAL_ID, -1);
+        tattooDate = intent.getStringExtra(EXTRA_TATTOO_DATE);
+        sessions = intent.getIntExtra(EXTRA_SESSIONS, 0);
+        coverUp = intent.getBooleanExtra(EXTRA_COVERUP, false);
+        color = intent.getBooleanExtra(EXTRA_COLOR, false);
 
         tvStyle.setText(style);
         tvDesc.setText(desc);
@@ -56,36 +86,9 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                 .load(imageUrl)
                 .centerCrop()
                 .into(ivTattoo);
-    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // Activa Edit/Borrar
-        MenuItem edit = menu.findItem(R.id.menu_edit_tattoo);
-        MenuItem delete = menu.findItem(R.id.menu_delete_tattoo);
-
-        if (edit != null) edit.setVisible(true);
-        if (delete != null) delete.setVisible(true);
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.menu_delete_tattoo) {
-            showDeleteDialog();
-            return true;
-        }
-
-        if (id == R.id.menu_edit_tattoo) {
-            Toast.makeText(this, "Editar (pendiente)", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        btnDeleteTattoo.setOnClickListener(v -> showDeleteDialog());
+        btnEditTattoo.setOnClickListener(v -> showEditDialog());
     }
 
     private void showDeleteDialog() {
@@ -96,9 +99,79 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                 .show();
     }
 
+    private void showEditDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_tattoo, null);
+
+        EditText etStyle = view.findViewById(R.id.etTattooStyle);
+        EditText etDesc = view.findViewById(R.id.etTattooDescription);
+        EditText etImage = view.findViewById(R.id.etTattooImageUrl);
+
+        etStyle.setText(style);
+        etDesc.setText(desc);
+        etImage.setText(imageUrl);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Editar tatuaje")
+                .setView(view)
+                .setPositiveButton("Guardar", null)
+                .setNegativeButton("Cancelar", null)
+                .create();
+
+        dialog.setOnShowListener(d ->
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+
+                    String newStyle = etStyle.getText().toString().trim();
+                    String newDesc = etDesc.getText().toString().trim();
+                    String newImage = etImage.getText().toString().trim();
+
+                    if (newStyle.isEmpty() || newDesc.isEmpty()) {
+                        Toast.makeText(this, "Estilo y descripción son obligatorios", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (newImage.isEmpty()) newImage = imageUrl;
+
+                    if (tattooDate == null || tattooDate.trim().isEmpty() || clientId <= 0 || professionalId <= 0) {
+                        Toast.makeText(this,
+                                "Faltan datos obligatorios (cliente/profesional/fecha). Vuelve a abrir el detalle desde la lista.",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    Tattoo updated = Tattoo.builder()
+                            .clientId(clientId)
+                            .professionalId(professionalId)
+                            .tattooDate(tattooDate)
+                            .style(newStyle)
+                            .tattooDescription(newDesc)
+                            .imageUrl(newImage)
+                            .sessions(sessions)
+                            .coverUp(coverUp)
+                            .color(color)
+                            .build();
+
+                    presenter.updateTattoo(tattooId, updated);
+                    dialog.dismiss();
+                })
+        );
+
+        dialog.show();
+    }
+
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+        if (message != null && message.toLowerCase().contains("elim")) {
+            AppDatabase db = AppDatabase.getInstance(this);
+            db.favoriteTattooDao().deleteByTattooId(tattooId);
+        }
+    }
+
+    @Override
+    public void onTattooUpdated(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

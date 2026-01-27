@@ -15,6 +15,7 @@ import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.db.FavoriteTattoo;
 import com.svalero.RosasTattoo.domain.Tattoo;
+import com.svalero.RosasTattoo.view.TattooDetailView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,14 +76,24 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
                 db.favoriteTattooDao().deleteByTattooId(tattoo.getId());
             }
         });
-        holder.itemView.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(holder.itemView.getContext(),
-                    com.svalero.RosasTattoo.view.TattooDetailView.class);
 
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
-            intent.putExtra(com.svalero.RosasTattoo.view.TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
+        holder.itemView.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(
+                    holder.itemView.getContext(),
+                    TattooDetailView.class
+            );
+
+            // básicos
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
+            intent.putExtra(TattooDetailView.EXTRA_CLIENT_ID, tattoo.getClientId());
+            intent.putExtra(TattooDetailView.EXTRA_PROFESSIONAL_ID, tattoo.getProfessionalId());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_DATE, tattoo.getTattooDate());
+            intent.putExtra(TattooDetailView.EXTRA_SESSIONS, tattoo.getSessions());
+            intent.putExtra(TattooDetailView.EXTRA_COVERUP, tattoo.isCoverUp());
+            intent.putExtra(TattooDetailView.EXTRA_COLOR, tattoo.isColor());
 
             holder.itemView.getContext().startActivity(intent);
         });

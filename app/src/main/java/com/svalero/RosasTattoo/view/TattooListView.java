@@ -43,6 +43,12 @@ public class TattooListView extends BaseView implements TattooListContract.View 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadTattoos();
+    }
+
+    @Override
     public void showTattoos(List<Tattoo> tattoos) {
         tattooAdapter.setData(tattoos);
     }

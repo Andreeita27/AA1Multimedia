@@ -1,9 +1,12 @@
 package com.svalero.RosasTattoo.presenter;
 
 import com.svalero.RosasTattoo.contract.TattooDetailContract;
+import com.svalero.RosasTattoo.domain.Tattoo;
 import com.svalero.RosasTattoo.model.TattooDetailModel;
 
-public class TattooDetailPresenter implements TattooDetailContract.Presenter, TattooDetailContract.Model.OnDeleteTattooListener {
+public class TattooDetailPresenter implements TattooDetailContract.Presenter,
+        TattooDetailContract.Model.OnDeleteTattooListener,
+        TattooDetailContract.Model.OnUpdateTattooListener {
 
     private TattooDetailContract.View view;
     private TattooDetailContract.Model model;
@@ -26,6 +29,21 @@ public class TattooDetailPresenter implements TattooDetailContract.Presenter, Ta
 
     @Override
     public void onDeleteTattooError(String message) {
+        view.showError(message);
+    }
+
+    @Override
+    public void updateTattoo(long id, Tattoo tattoo) {
+        model.updateTattoo(id, tattoo, this);
+    }
+
+    @Override
+    public void onUpdateTattooSuccess(String message) {
+        view.onTattooUpdated(message);
+    }
+
+    @Override
+    public void onUpdateTattooError(String message) {
         view.showError(message);
     }
 }

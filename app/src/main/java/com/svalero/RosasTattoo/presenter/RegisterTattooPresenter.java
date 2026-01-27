@@ -1,9 +1,13 @@
 package com.svalero.RosasTattoo.presenter;
 
 import com.svalero.RosasTattoo.contract.RegisterTattooContract;
+import com.svalero.RosasTattoo.domain.Client;
+import com.svalero.RosasTattoo.domain.Professional;
 import com.svalero.RosasTattoo.model.RegisterTattooModel;
 
-public class RegisterTattooPresenter implements RegisterTattooContract.Presenter, RegisterTattooContract.Model.OnRegisterTattooListener {
+import java.util.List;
+
+public class RegisterTattooPresenter implements RegisterTattooContract.Presenter {
 
     private RegisterTattooContract.View view;
     private RegisterTattooContract.Model model;
@@ -14,8 +18,7 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
     }
 
     @Override
-    public void registerTattoo(String style, String description, String imageUrl) {
-
+    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl) {
         if (style == null || style.trim().isEmpty()) {
             view.showError("El estilo es obligatorio");
             return;
@@ -26,17 +29,48 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
             return;
         }
 
-        model.registerTattoo(style, description, imageUrl, this);
+        model.registerTattoo(clientId, professionalId, style, description, imageUrl,
+                new RegisterTattooContract.Model.OnRegisterTattooListener() {
+                    @Override
+                    public void onRegisterTattooSuccess(String message) {
+                        view.showMessage(message);
+                        view.clearForm();
+                    }
+
+                    @Override
+                    public void onRegisterTattooError(String message) {
+                        view.showError(message);
+                    }
+                });
     }
 
     @Override
-    public void onRegisterTattooSuccess(String message) {
-        view.showMessage(message);
-        view.clearForm();
+    public void loadClients() {
+        model.loadClients(new RegisterTattooContract.Model.OnLoadClientsListener() {
+            @Override
+            public void onLoadClientsSuccess(List<Client> clients) {
+                view.showClients(clients);
+            }
+
+            @Override
+            public void onLoadClientsError(String message) {
+                view.showClientsError(message);
+            }
+        });
     }
 
     @Override
-    public void onRegisterTattooError(String message) {
-        view.showError(message);
+    public void loadProfessionals() {
+        model.loadProfessionals(new RegisterTattooContract.Model.OnLoadProfessionalsListener() {
+            @Override
+            public void onLoadProfessionalsSuccess(List<Professional> professionals) {
+                view.showProfessionals(professionals);
+            }
+
+            @Override
+            public void onLoadProfessionalsError(String message) {
+                view.showProfessionalsError(message);
+            }
+        });
     }
 }
