@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">62 Rosas Tattoo</string>
     <string name="menu_home">Inicio</string>
     <string name="menu_showroom">Showroom</string>
     <string name="menu_professionals">Tatuadores</string>
@@ -31,5 +32,9 @@
     <string name="photo_professional" >Imagen URL</string>
     <string name="experience_professional"> Años de experiencia</string>
     <string name="books_opened">Agenda abierta</string>
+    <string name="client_option">Cliente</string>
+    <string name="professional_option">Profesional</string>
+    <string name="tattoo_image">Sube Imagen</string>
+    <string name="add_tattoo">Añadir tatuaje</string>
 
 </resources>

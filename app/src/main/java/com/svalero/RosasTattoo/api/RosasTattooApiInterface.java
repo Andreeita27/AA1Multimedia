@@ -22,6 +22,9 @@ public interface RosasTattooApiInterface {
     @POST("clients")
     Call<Client> registerClient(@Body Client client);
 
+    @GET("clients")
+    Call<List<Client>> getClients();
+
     @GET("professionals")
     Call<List<Professional>> getProfessionals();
 
@@ -33,10 +36,10 @@ public interface RosasTattooApiInterface {
 
     @DELETE("professionals/{id}")
     Call<Void> deleteProfessional(@Path("id") long id);
+
     @POST("tattoos")
     Call<Tattoo> registerTattoo(@Body Tattoo tattoo);
 
     @DELETE("tattoos/{id}")
     Call<Void> deleteTattoo(@Path("id") long id);
 }
-

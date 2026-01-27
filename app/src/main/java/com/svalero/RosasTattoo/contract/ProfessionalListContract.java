@@ -27,7 +27,7 @@ public interface ProfessionalListContract {
         void showProfessionals(List<Professional> professionals);
         void showMessage(String message);
         void showError(String message);
-        void refreshList(); // volver a cargar
+        void refreshList();
     }
 
     interface Presenter {
