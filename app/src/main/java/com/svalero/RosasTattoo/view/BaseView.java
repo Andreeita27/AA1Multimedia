@@ -48,10 +48,6 @@ public class BaseView extends AppCompatActivity {
             startActivity(new Intent(this, FavoriteTattooListView.class));
             return true;
 
-        } else if (id == R.id.menu_map) {
-            startActivity(new Intent(this, ConventionMapView.class));
-            return true;
-
         } else if (id == R.id.menu_client) {
             startActivity(new Intent(this, RegisterClientView.class));
             return true;

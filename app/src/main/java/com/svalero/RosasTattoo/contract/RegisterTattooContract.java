@@ -3,6 +3,7 @@ package com.svalero.RosasTattoo.contract;
 import com.svalero.RosasTattoo.domain.Client;
 import com.svalero.RosasTattoo.domain.Professional;
 
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 public interface RegisterTattooContract {
@@ -14,7 +15,7 @@ public interface RegisterTattooContract {
             void onRegisterTattooError(String message);
         }
 
-        void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, OnRegisterTattooListener listener);
+        void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, Double latitude, Double longitude, OnRegisterTattooListener listener);
 
         interface OnLoadClientsListener {
             void onLoadClientsSuccess(List<Client> clients);
@@ -41,7 +42,7 @@ public interface RegisterTattooContract {
     }
 
     interface Presenter {
-        void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl);
+        void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, Double latitude, Double longitude);
         void loadClients();
         void loadProfessionals();
     }

@@ -19,7 +19,7 @@ import retrofit2.Response;
 public class RegisterTattooModel implements RegisterTattooContract.Model {
 
     @Override
-    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, OnRegisterTattooListener listener) {
+    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, Double latitude, Double longitude, OnRegisterTattooListener listener) {
 
         RosasTattooApiInterface apiInterface = RosasTattooApi.buildInstance();
 
@@ -32,6 +32,8 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
                 .style(style)
                 .tattooDescription(description)
                 .imageUrl(imageUrl)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
 
         Call<Tattoo> call = apiInterface.registerTattoo(tattoo);

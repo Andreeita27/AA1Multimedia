@@ -55,4 +55,6 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+    implementation("com.mapbox.maps:android:11.7.1")
 }

@@ -23,11 +23,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_map"
-        android:title="@string/menu_map"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/menu_client"
         android:title="@string/menu_client"
         app:showAsAction="never" />

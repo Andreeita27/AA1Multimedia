@@ -5,7 +5,6 @@
     <string name="menu_showroom">Showroom</string>
     <string name="menu_professionals">Tatuadores</string>
     <string name="menu_favorite">Favoritos</string>
-    <string name="menu_map">Mapa de convenciones</string>
     <string name="menu_client">Alta cliente</string>
     <string name="home_title">62 Rosas Tattoo</string>
     <string name="style">Estilo</string>
@@ -38,5 +37,7 @@
     <string name="add_tattoo">Añadir tatuaje</string>
     <string name="edit_tattoo">Editar</string>
     <string name="delete_tattoo">Eliminar</string>
+    <string name="latitude">Latitud</string>
+    <string name="longitude">Longitud</string>
 
 </resources>
