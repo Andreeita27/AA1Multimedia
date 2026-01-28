@@ -49,8 +49,14 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
         holder.tvStyle.setText(tattoo.getStyle());
         holder.tvDesc.setText(tattoo.getTattooDescription());
 
+        String localUri = db.localImageDao().getImageUri("TATTOO", tattoo.getId());
+
+        String toLoad = (localUri != null && !localUri.isEmpty())
+                ? localUri
+                : tattoo.getImageUrl();
+
         Glide.with(holder.itemView.getContext())
-                .load(tattoo.getImageUrl())
+                .load(toLoad)
                 .centerCrop()
                 .into(holder.ivTattoo);
 
@@ -70,7 +76,7 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
 
                     fav.setStyle(tattoo.getStyle());
                     fav.setTattooDate(tattoo.getTattooDate());
-                    fav.setImageUrl(tattoo.getImageUrl());
+                    fav.setImageUrl(toLoad);
                     fav.setTattooDescription(tattoo.getTattooDescription());
 
                     db.favoriteTattooDao().insert(fav);
@@ -89,7 +95,8 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
-            intent.putExtra(TattooDetailView.EXTRA_TATTOO_IMAGE, tattoo.getImageUrl());
+            intent.putExtra(TattooDetailView.EXTRA_TATTOO_IMAGE, toLoad);
+
             intent.putExtra(TattooDetailView.EXTRA_CLIENT_ID, tattoo.getClientId());
             intent.putExtra(TattooDetailView.EXTRA_PROFESSIONAL_ID, tattoo.getProfessionalId());
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_DATE, tattoo.getTattooDate());

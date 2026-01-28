@@ -3,14 +3,15 @@ package com.svalero.RosasTattoo.presenter;
 import com.svalero.RosasTattoo.contract.RegisterTattooContract;
 import com.svalero.RosasTattoo.domain.Client;
 import com.svalero.RosasTattoo.domain.Professional;
+import com.svalero.RosasTattoo.domain.Tattoo;
 import com.svalero.RosasTattoo.model.RegisterTattooModel;
 
 import java.util.List;
 
 public class RegisterTattooPresenter implements RegisterTattooContract.Presenter {
 
-    private RegisterTattooContract.View view;
-    private RegisterTattooContract.Model model;
+    private final RegisterTattooContract.View view;
+    private final RegisterTattooContract.Model model;
 
     public RegisterTattooPresenter(RegisterTattooContract.View view) {
         this.view = view;
@@ -18,7 +19,9 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
     }
 
     @Override
-    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, Double latitude, Double longitude) {
+    public void registerTattoo(long clientId, long professionalId, String style, String description,
+                               String imageUrl, Double latitude, Double longitude) {
+
         if (style == null || style.trim().isEmpty()) {
             view.showError("El estilo es obligatorio");
             return;
@@ -32,9 +35,13 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
         model.registerTattoo(clientId, professionalId, style, description, imageUrl, latitude, longitude,
                 new RegisterTattooContract.Model.OnRegisterTattooListener() {
                     @Override
-                    public void onRegisterTattooSuccess(String message) {
+                    public void onRegisterTattooSuccess(String message, Tattoo tattoo) {
                         view.showMessage(message);
-                        view.clearForm();
+                        if (tattoo != null) {
+                            view.onTattooRegistered(tattoo.getId());
+                        } else {
+                            view.clearForm();
+                        }
                     }
 
                     @Override

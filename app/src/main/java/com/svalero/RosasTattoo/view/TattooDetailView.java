@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +30,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.contract.TattooDetailContract;
+import com.svalero.RosasTattoo.db.LocalImage;
 import com.svalero.RosasTattoo.domain.Tattoo;
 import com.svalero.RosasTattoo.presenter.TattooDetailPresenter;
 
@@ -75,6 +78,10 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
 
     private TattooDetailContract.Presenter presenter;
 
+    private ActivityResultLauncher<String[]> pickImageLauncher;
+    private EditText currentTattooImageEditText;
+    private String selectedImageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,15 +121,52 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         tvStyle.setText(style);
         tvDesc.setText(desc);
 
-        Glide.with(this)
-                .load(imageUrl)
-                .centerCrop()
-                .into(ivTattoo);
+        refreshTattooImage();
+
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.OpenDocument(),
+                uri -> {
+                    if (uri != null) {
+                        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        try {
+                            getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                        } catch (Exception ignored) {}
+
+                        selectedImageUri = uri.toString();
+
+                        if (currentTattooImageEditText != null) {
+                            currentTattooImageEditText.setText(selectedImageUri);
+                        }
+
+                        AppDatabase.getInstance(this)
+                                .localImageDao()
+                                .upsert(new LocalImage("TATTOO", tattooId, selectedImageUri));
+
+                        refreshTattooImage();
+
+                        Toast.makeText(this, "Imagen seleccionada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
 
         initMap();
 
         btnDeleteTattoo.setOnClickListener(v -> showDeleteDialog());
         btnEditTattoo.setOnClickListener(v -> showEditDialog());
+    }
+
+    private void refreshTattooImage() {
+        AppDatabase db = AppDatabase.getInstance(this);
+        String localUri = db.localImageDao().getImageUri("TATTOO", tattooId);
+
+        String toLoad = (localUri != null && !localUri.isEmpty())
+                ? localUri
+                : imageUrl;
+
+        Glide.with(this)
+                .load(toLoad)
+                .centerCrop()
+                .into(ivTattoo);
     }
 
     // MAPBOX
@@ -190,7 +234,19 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
 
         etStyle.setText(style);
         etDesc.setText(desc);
-        etImage.setText(imageUrl);
+
+        String localUri = AppDatabase.getInstance(this)
+                .localImageDao()
+                .getImageUri("TATTOO", tattooId);
+
+        etImage.setText((localUri != null && !localUri.isEmpty()) ? localUri : imageUrl);
+
+        etImage.setFocusable(false);
+        etImage.setClickable(true);
+        etImage.setOnClickListener(v -> {
+            currentTattooImageEditText = etImage;
+            pickImageLauncher.launch(new String[]{"image/*"});
+        });
 
         double currentLat = (latitude != null) ? latitude : DEFAULT_LAT;
         double currentLon = (longitude != null) ? longitude : DEFAULT_LON;
@@ -260,8 +316,15 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
 
                     presenter.updateTattoo(tattooId, updated);
 
+                    style = newStyle;
+                    desc = newDesc;
+                    imageUrl = newImage;
                     latitude = newLat;
                     longitude = newLon;
+
+                    tvStyle.setText(style);
+                    tvDesc.setText(desc);
+                    refreshTattooImage();
 
                     if (pointAnnotationManager != null) {
                         pointAnnotationManager.deleteAll();
@@ -272,6 +335,9 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                     dialog.dismiss();
                 })
         );
+
+        dialog.setOnDismissListener(d -> currentTattooImageEditText = null);
+
         dialog.show();
     }
 
