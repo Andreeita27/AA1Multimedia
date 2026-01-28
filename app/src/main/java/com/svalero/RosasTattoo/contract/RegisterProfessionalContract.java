@@ -1,10 +1,13 @@
 package com.svalero.RosasTattoo.contract;
 
+import com.svalero.RosasTattoo.domain.Professional;
+
 public interface RegisterProfessionalContract {
 
     interface View {
         void showMessage(String message);
         void showError(String error);
+        void onProfessionalRegistered(Long professionalId);
         void close();
     }
 
@@ -27,7 +30,7 @@ public interface RegisterProfessionalContract {
                                   OnRegisterProfessionalListener listener);
 
         interface OnRegisterProfessionalListener {
-            void onRegisterProfessionalSuccess(String message);
+            void onRegisterProfessionalSuccess(String message, Professional professional);
             void onRegisterProfessionalError(String message);
         }
     }

@@ -1,6 +1,7 @@
 package com.svalero.RosasTattoo.presenter;
 
 import com.svalero.RosasTattoo.contract.RegisterProfessionalContract;
+import com.svalero.RosasTattoo.domain.Professional;
 import com.svalero.RosasTattoo.model.RegisterProfessionalModel;
 
 public class RegisterProfessionalPresenter implements RegisterProfessionalContract.Presenter,
@@ -39,9 +40,14 @@ public class RegisterProfessionalPresenter implements RegisterProfessionalContra
     }
 
     @Override
-    public void onRegisterProfessionalSuccess(String message) {
+    public void onRegisterProfessionalSuccess(String message, Professional professional) {
         view.showMessage(message);
-        view.close();
+
+        if (professional != null) {
+            view.onProfessionalRegistered(professional.getId());
+        } else {
+            view.close();
+        }
     }
 
     @Override
