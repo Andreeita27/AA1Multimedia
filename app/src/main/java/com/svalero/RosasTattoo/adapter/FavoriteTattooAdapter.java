@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.svalero.RosasTattoo.R;
+import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.db.FavoriteTattoo;
 
 import java.util.ArrayList;
@@ -55,9 +56,15 @@ public class FavoriteTattooAdapter extends RecyclerView.Adapter<FavoriteTattooAd
         String date = safe(item.getTattooDate(), "Sin fecha");
         holder.tvTattooInfo.setText(desc + " · " + date);
 
-        // Imagen
+        AppDatabase db = AppDatabase.getInstance(holder.itemView.getContext());
+        String localUri = db.localImageDao().getImageUri("TATTOO", item.getTattooId());
+
+        String toLoad = (localUri != null && !localUri.trim().isEmpty())
+                ? localUri
+                : item.getImageUrl();
+
         Glide.with(holder.itemView.getContext())
-                .load(item.getImageUrl())
+                .load(toLoad)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .error(R.drawable.ic_image_placeholder)
                 .into(holder.ivTattooImage);

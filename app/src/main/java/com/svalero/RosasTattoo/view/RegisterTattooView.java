@@ -1,5 +1,6 @@
 package com.svalero.RosasTattoo.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -7,8 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.contract.RegisterTattooContract;
+import com.svalero.RosasTattoo.db.AppDatabase;
+import com.svalero.RosasTattoo.db.LocalImage;
 import com.svalero.RosasTattoo.domain.Client;
 import com.svalero.RosasTattoo.domain.Professional;
 import com.svalero.RosasTattoo.presenter.RegisterTattooPresenter;
@@ -37,6 +43,10 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
     private static final double DEFAULT_LAT = 41.648823;
     private static final double DEFAULT_LON = -0.889085;
 
+    private String selectedImageUri;
+
+    private ActivityResultLauncher<String[]> pickImageLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +68,30 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
         presenter.loadClients();
         presenter.loadProfessionals();
 
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.OpenDocument(),
+                uri -> {
+                    if (uri != null) {
+                        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        try {
+                            getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                        } catch (Exception ignored) { }
+
+                        selectedImageUri = uri.toString();
+                        etImageUrl.setText(selectedImageUri);
+                        Toast.makeText(this, "Imagen seleccionada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+        etImageUrl.setFocusable(false);
+        etImageUrl.setClickable(true);
+        etImageUrl.setOnClickListener(v -> pickImageLauncher.launch(new String[]{"image/*"}));
+
         btnRegisterTattoo.setOnClickListener(v -> {
             String style = etStyle.getText().toString().trim();
             String description = etDescription.getText().toString().trim();
-            String imageUrl = etImageUrl.getText().toString().trim();
+            String imageUrl = etImageUrl.getText().toString().trim(); // aquí va la URI
 
             if (selectedClient == null || selectedProfessional == null) {
                 Toast.makeText(this, "Selecciona cliente y profesional", Toast.LENGTH_SHORT).show();
@@ -142,11 +172,18 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
     }
 
     @Override
+    public void onTattooRegistered(long tattooId) {
+        if (selectedImageUri != null && !selectedImageUri.isEmpty()) {
+            AppDatabase.getInstance(this)
+                    .localImageDao()
+                    .upsert(new LocalImage("TATTOO", tattooId, selectedImageUri));
+        }
+        finish();
+    }
+
+    @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        if (message != null && message.toLowerCase().contains("registrado")) {
-            finish();
-        }
     }
 
     @Override
@@ -177,5 +214,6 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
         actvProfessional.setText("", false);
         selectedClient = null;
         selectedProfessional = null;
+        selectedImageUri = null;
     }
 }

@@ -1,15 +1,19 @@
 package com.svalero.RosasTattoo.adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.svalero.RosasTattoo.R;
+import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.domain.Professional;
 
 import java.util.ArrayList;
@@ -49,6 +53,17 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
         holder.tvDesc.setText(p.getDescription());
         holder.tvExtra.setText("Exp: " + p.getYearsExperience() + " | Books: " + (p.isBooksOpened() ? "Sí" : "No"));
 
+        Context context = holder.itemView.getContext();
+        String imageUri = AppDatabase.getInstance(context)
+                .localImageDao()
+                .getImageUri("PROFESSIONAL", p.getId());
+
+        if (imageUri != null && !imageUri.isEmpty()) {
+            holder.ivAvatar.setImageURI(Uri.parse(imageUri));
+        } else {
+            holder.ivAvatar.setImageResource(R.drawable.ic_image_placeholder);
+        }
+
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(p));
         holder.btnDelete.setOnClickListener(v -> listener.onDelete(p));
     }
@@ -61,6 +76,7 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
     static class ProfessionalViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDesc, tvExtra;
         ImageButton btnEdit, btnDelete;
+        ImageView ivAvatar;
 
         ProfessionalViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +85,7 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
             tvExtra = itemView.findViewById(R.id.tvProfessionalExtra);
             btnEdit = itemView.findViewById(R.id.btnEditProfessional);
             btnDelete = itemView.findViewById(R.id.btnDeleteProfessional);
+            ivAvatar = itemView.findViewById(R.id.ivProfessionalAvatar);
         }
     }
 }

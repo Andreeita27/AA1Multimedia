@@ -12,14 +12,13 @@ import retrofit2.Response;
 public class RegisterProfessionalModel implements RegisterProfessionalContract.Model {
 
     @Override
-    public void registerProfessional(
-            String professionalName,
-            String birthDate,
-            String description,
-            String profilePhoto,
-            int yearsExperience,
-            boolean booksOpened,
-            OnRegisterProfessionalListener listener) {
+    public void registerProfessional(String professionalName,
+                                     String birthDate,
+                                     String description,
+                                     String profilePhoto,
+                                     int yearsExperience,
+                                     boolean booksOpened,
+                                     OnRegisterProfessionalListener listener) {
 
         RosasTattooApiInterface apiInterface = RosasTattooApi.buildInstance();
 
@@ -38,7 +37,10 @@ public class RegisterProfessionalModel implements RegisterProfessionalContract.M
             @Override
             public void onResponse(Call<Professional> call, Response<Professional> response) {
                 if (response.isSuccessful()) {
-                    listener.onRegisterProfessionalSuccess("Profesional registrado correctamente");
+                    listener.onRegisterProfessionalSuccess(
+                            "Profesional registrado correctamente",
+                            response.body()
+                    );
                 } else {
                     listener.onRegisterProfessionalError(
                             "No se ha podido registrar el profesional (HTTP " + response.code() + ")"

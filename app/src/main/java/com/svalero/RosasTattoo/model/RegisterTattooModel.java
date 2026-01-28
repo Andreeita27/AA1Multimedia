@@ -19,7 +19,9 @@ import retrofit2.Response;
 public class RegisterTattooModel implements RegisterTattooContract.Model {
 
     @Override
-    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, Double latitude, Double longitude, OnRegisterTattooListener listener) {
+    public void registerTattoo(long clientId, long professionalId, String style, String description,
+                               String imageUrl, Double latitude, Double longitude,
+                               OnRegisterTattooListener listener) {
 
         RosasTattooApiInterface apiInterface = RosasTattooApi.buildInstance();
 
@@ -39,11 +41,10 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
         Call<Tattoo> call = apiInterface.registerTattoo(tattoo);
 
         call.enqueue(new Callback<Tattoo>() {
-
             @Override
             public void onResponse(Call<Tattoo> call, Response<Tattoo> response) {
                 if (response.isSuccessful()) {
-                    listener.onRegisterTattooSuccess("Tatuaje registrado correctamente");
+                    listener.onRegisterTattooSuccess("Tatuaje registrado correctamente", response.body());
                 } else {
                     String error = "HTTP " + response.code();
                     try {
@@ -65,7 +66,6 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
 
     @Override
     public void loadClients(OnLoadClientsListener listener) {
-
         RosasTattooApiInterface apiInterface = RosasTattooApi.buildInstance();
         Call<List<Client>> call = apiInterface.getClients();
 
@@ -88,7 +88,6 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
 
     @Override
     public void loadProfessionals(OnLoadProfessionalsListener listener) {
-
         RosasTattooApiInterface apiInterface = RosasTattooApi.buildInstance();
         Call<List<Professional>> call = apiInterface.getProfessionals();
 
