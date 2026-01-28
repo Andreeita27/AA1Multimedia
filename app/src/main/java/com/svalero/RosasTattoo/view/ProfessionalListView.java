@@ -2,8 +2,6 @@ package com.svalero.RosasTattoo.view;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,23 +38,8 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
 
         presenter = new ProfessionalListPresenter(this);
         presenter.loadProfessionals();
-    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // hacemos visible el item de "Añadir professional" SOLO aquí
-        MenuItem add = menu.findItem(R.id.menu_add_professional);
-        if (add != null) add.setVisible(true);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_add_professional) {
-            showProfessionalDialog(null);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        findViewById(R.id.btnAddProfessional).setOnClickListener(v -> showProfessionalDialog(null));
     }
 
     @Override

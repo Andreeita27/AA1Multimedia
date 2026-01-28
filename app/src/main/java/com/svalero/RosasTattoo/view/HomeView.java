@@ -2,8 +2,6 @@ package com.svalero.RosasTattoo.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.svalero.RosasTattoo.R;
 
@@ -23,5 +21,8 @@ public class HomeView extends BaseView {
         findViewById(R.id.btnSaved).setOnClickListener(v ->
                 startActivity(new Intent(this, FavoriteTattooListView.class)));
 
+        findViewById(R.id.btnAddClient).setOnClickListener(v -> {
+            startActivity(new Intent(this, RegisterClientView.class));
+        });
     }
 }

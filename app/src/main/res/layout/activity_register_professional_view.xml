@@ -1,11 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.RegisterProfessionalView"
+    android:fillViewport="true"
+    android:background="#000000"
     android:fitsSystemWindows="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_add_professional"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="60dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
+            android:background="#b5a16c" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_professional"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="#121212"
+            app:boxStrokeColor="#b5a16c">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProfessionalName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#888888" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/birth_professional"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="#121212"
+            app:boxStrokeColor="#b5a16c">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProfessionalBirthDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#888888"
+                android:inputType="date" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/description_professional"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="#121212"
+            app:boxStrokeColor="#b5a16c">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProfessionalDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="3"
+                android:gravity="top"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#888888" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/photo_professional"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="#121212"
+            app:boxStrokeColor="#b5a16c">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProfessionalPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#888888" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/experience_professional"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="#121212"
+            app:boxStrokeColor="#b5a16c">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProfessionalYears"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#888888" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/cbProfessionalBooksOpened"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/books_opened"
+            android:textColor="#FFFFFF"
+            android:buttonTint="#b5a16c" />
+
+        <Button
+            android:id="@+id/btnSaveProfessional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Guardar profesional"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:backgroundTint="#b5a16c" />
+
+    </LinearLayout>
+</ScrollView>

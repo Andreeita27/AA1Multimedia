@@ -1,6 +1,8 @@
 package com.svalero.RosasTattoo.view;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,9 @@ public class FavoriteTattooListView extends BaseView {
     private AppDatabase db;
     private FavoriteTattooAdapter adapter;
 
+    private RecyclerView rvFavorites;
+    private LinearLayout emptyStateFavorites;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,19 +29,19 @@ public class FavoriteTattooListView extends BaseView {
 
         db = AppDatabase.getInstance(this);
 
-        RecyclerView rv = findViewById(R.id.rvFavorites);
+        rvFavorites = findViewById(R.id.rvFavorites);
+        emptyStateFavorites = findViewById(R.id.emptyStateFavorites);
 
-        LinearLayoutManager lm =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager lm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         lm.setStackFromEnd(false);
-        rv.setLayoutManager(lm);
+        rvFavorites.setLayoutManager(lm);
 
         adapter = new FavoriteTattooAdapter((item, checked) -> {
             item.setInstagram(checked);
             db.favoriteTattooDao().update(item);
         });
 
-        rv.setAdapter(adapter);
+        rvFavorites.setAdapter(adapter);
 
         loadFavorites();
     }
@@ -50,5 +55,9 @@ public class FavoriteTattooListView extends BaseView {
     private void loadFavorites() {
         List<FavoriteTattoo> favorites = db.favoriteTattooDao().getAll();
         adapter.setData(favorites);
+
+        boolean isEmpty = (favorites == null || favorites.isEmpty());
+        emptyStateFavorites.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        rvFavorites.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
 }

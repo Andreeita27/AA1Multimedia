@@ -39,5 +39,17 @@
     <string name="delete_tattoo">Delete</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+    <string name="location">Location</string>
+    <string name="fav_description" />
+    <string name="no_fav" />
+    <string name="fav_instructions" />
+    <string name="professional_subtitle" />
+    <string name="professional_information">Datos del profesional</string>
+    <string name="instagram" />
+    <string name="tattoo_info">Style • Date</string>
+    <string name="favorite_instructions">Marca el corazón en un tatuaje para verlo aquí</string>
+    <string name="favorite_empty" />
+    <string name="instagram_instructions" />
+    <string name="instagram_button">Instagram</string>
 
 </resources>

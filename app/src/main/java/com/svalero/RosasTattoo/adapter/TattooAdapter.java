@@ -23,7 +23,7 @@ import java.util.List;
 public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooViewHolder> {
 
     private List<Tattoo> tattoos = new ArrayList<>();
-    private AppDatabase db;
+    private final AppDatabase db;
 
     public TattooAdapter(AppDatabase db) {
         this.db = db;
@@ -56,20 +56,23 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
 
         holder.cbFavorite.setOnCheckedChangeListener(null);
 
-        boolean isFav = db.favoriteTattooDao()
-                .getByTattooId(tattoo.getId()) != null;
-
+        boolean isFav = db.favoriteTattooDao().getByTattooId(tattoo.getId()) != null;
         holder.cbFavorite.setChecked(isFav);
 
         holder.cbFavorite.setOnCheckedChangeListener((buttonView, checked) -> {
             if (checked) {
-                FavoriteTattoo existing =
-                        db.favoriteTattooDao().getByTattooId(tattoo.getId());
+                FavoriteTattoo existing = db.favoriteTattooDao().getByTattooId(tattoo.getId());
 
                 if (existing == null) {
                     FavoriteTattoo fav = new FavoriteTattoo();
                     fav.setTattooId(tattoo.getId());
                     fav.setInstagram(false);
+
+                    fav.setStyle(tattoo.getStyle());
+                    fav.setTattooDate(tattoo.getTattooDate());
+                    fav.setImageUrl(tattoo.getImageUrl());
+                    fav.setTattooDescription(tattoo.getTattooDescription());
+
                     db.favoriteTattooDao().insert(fav);
                 }
             } else {

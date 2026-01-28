@@ -18,13 +18,6 @@ public class BaseView extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem addTattooItem = menu.findItem(R.id.menu_add_tattoo);
-
-        // Solo visible en Showroom
-        if (addTattooItem != null) {
-            addTattooItem.setVisible(this instanceof TattooListView);
-        }
-
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -50,10 +43,6 @@ public class BaseView extends AppCompatActivity {
 
         } else if (id == R.id.menu_client) {
             startActivity(new Intent(this, RegisterClientView.class));
-            return true;
-
-        } else if (id == R.id.menu_add_tattoo) {
-            startActivity(new Intent(this, RegisterTattooView.class));
             return true;
         }
 

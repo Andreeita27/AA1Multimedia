@@ -4,11 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.db.FavoriteTattoo;
 
@@ -21,7 +23,7 @@ public class FavoriteTattooAdapter extends RecyclerView.Adapter<FavoriteTattooAd
         void onInstagramChanged(FavoriteTattoo item, boolean checked);
     }
 
-    private List<FavoriteTattoo> data = new ArrayList<>();
+    private final List<FavoriteTattoo> data = new ArrayList<>();
     private final Listener listener;
 
     public FavoriteTattooAdapter(Listener listener) {
@@ -30,9 +32,7 @@ public class FavoriteTattooAdapter extends RecyclerView.Adapter<FavoriteTattooAd
 
     public void setData(List<FavoriteTattoo> newData) {
         data.clear();
-        if (newData != null) {
-            data.addAll(newData);
-        }
+        if (newData != null) data.addAll(newData);
         notifyDataSetChanged();
     }
 
@@ -48,15 +48,33 @@ public class FavoriteTattooAdapter extends RecyclerView.Adapter<FavoriteTattooAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FavoriteTattoo item = data.get(position);
 
-        holder.tvTattooId.setText("Tattoo #" + item.getTattooId());
+        String style = safe(item.getStyle(), "Sin estilo");
+        holder.tvTattooId.setText(style);
 
+        String desc = safe(item.getTattooDescription(), "Sin descripción");
+        String date = safe(item.getTattooDate(), "Sin fecha");
+        holder.tvTattooInfo.setText(desc + " · " + date);
+
+        // Imagen
+        Glide.with(holder.itemView.getContext())
+                .load(item.getImageUrl())
+                .placeholder(R.drawable.ic_image_placeholder)
+                .error(R.drawable.ic_image_placeholder)
+                .into(holder.ivTattooImage);
+
+        // Checkbox IG
         holder.cbInstagram.setOnCheckedChangeListener(null);
         holder.cbInstagram.setChecked(item.isInstagram());
+        holder.cbInstagram.setContentDescription("Marcar para publicar este tatuaje en Instagram");
 
         holder.cbInstagram.setOnCheckedChangeListener((buttonView, isChecked) -> {
             item.setInstagram(isChecked);
             if (listener != null) listener.onInstagramChanged(item, isChecked);
         });
+    }
+
+    private String safe(String value, String fallback) {
+        return (value != null && !value.trim().isEmpty()) ? value : fallback;
     }
 
     @Override
@@ -65,12 +83,16 @@ public class FavoriteTattooAdapter extends RecyclerView.Adapter<FavoriteTattooAd
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivTattooImage;
         TextView tvTattooId;
+        TextView tvTattooInfo;
         CheckBox cbInstagram;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivTattooImage = itemView.findViewById(R.id.ivTattooImage);
             tvTattooId = itemView.findViewById(R.id.tvTattooId);
+            tvTattooInfo = itemView.findViewById(R.id.tvTattooInfo);
             cbInstagram = itemView.findViewById(R.id.cbInstagram);
         }
     }

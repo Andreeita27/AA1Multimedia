@@ -1,5 +1,6 @@
 package com.svalero.RosasTattoo.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -40,6 +41,9 @@ public class TattooListView extends BaseView implements TattooListContract.View 
 
         presenter = new TattooListPresenter(this);
         presenter.loadTattoos();
+
+        findViewById(R.id.btnAddTattoo).setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterTattooView.class)));
     }
 
     @Override

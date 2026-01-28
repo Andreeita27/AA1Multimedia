@@ -4,106 +4,233 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="#000000"
+    android:padding="16dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilClient"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardRegisterTattoo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/client_option"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#0b0b0b"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <AutoCompleteTextView
-            android:id="@+id/actvClient"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:fillViewport="true">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilProfessional"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/professional_option"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tilClient"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+                <TextView
+                    android:id="@+id/tvTitleRegisterTattoo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_tattoo"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="12dp" />
 
-        <AutoCompleteTextView
-            android:id="@+id/actvProfessional"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilClient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/client_option"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="#121212"
+                    app:boxStrokeColor="#b5a16c"
+                    app:hintTextColor="#b5a16c">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/actvClient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#888888"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/style"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tilProfessional"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilProfessional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/professional_option"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="#121212"
+                    app:boxStrokeColor="#b5a16c"
+                    app:hintTextColor="#b5a16c">
 
-    <EditText
-        android:id="@+id/etTattooDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/description"
-        android:minLines="3"
-        android:gravity="top"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/etStyle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                    <AutoCompleteTextView
+                        android:id="@+id/actvProfessional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#888888"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etImageUrl"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/tattoo_image"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/etTattooDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/style"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="#121212"
+                    app:boxStrokeColor="#b5a16c"
+                    app:hintTextColor="#b5a16c">
 
-    <EditText
-        android:id="@+id/etLatitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/latitude"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/etImageUrl"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#888888"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etLongitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/longitude"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/etLatitude"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/description"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="#121212"
+                    app:boxStrokeColor="#b5a16c"
+                    app:hintTextColor="#b5a16c">
 
-    <Button
-        android:id="@+id/btnRegisterTattoo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/add_tattoo"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/etLongitude"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTattooDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#888888"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/tattoo_image"
+                    app:boxBackgroundMode="filled"
+                    app:boxBackgroundColor="#121212"
+                    app:boxStrokeColor="#b5a16c"
+                    app:hintTextColor="#b5a16c">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etImageUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#888888"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutImageUploadPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:background="#111111">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/tattoo_image"
+                        android:textColor="#888888"
+                        android:textSize="13sp"/>
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@android:drawable/ic_menu_camera"
+                        android:contentDescription="@string/app_name"
+                        app:tint="#b5a16c" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/latitude"
+                        app:boxBackgroundMode="filled"
+                        app:boxBackgroundColor="#121212"
+                        app:boxStrokeColor="#b5a16c"
+                        app:hintTextColor="#b5a16c">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLatitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:textColor="#ffffff"
+                            android:textColorHint="#888888"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/longitude"
+                        app:boxBackgroundMode="filled"
+                        app:boxBackgroundColor="#121212"
+                        app:boxStrokeColor="#b5a16c"
+                        app:hintTextColor="#b5a16c">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLongitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:textColor="#ffffff"
+                            android:textColorHint="#888888"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegisterTattoo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/add_tattoo"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    app:backgroundTint="#b5a16c"
+                    app:cornerRadius="14dp"
+                    app:icon="@android:drawable/ic_input_add"
+                    app:iconTint="#000000"
+                    app:iconPadding="10dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
