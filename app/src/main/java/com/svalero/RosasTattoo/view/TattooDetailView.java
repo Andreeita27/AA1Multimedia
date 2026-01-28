@@ -185,10 +185,17 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         EditText etStyle = view.findViewById(R.id.etTattooStyle);
         EditText etDesc = view.findViewById(R.id.etTattooDescription);
         EditText etImage = view.findViewById(R.id.etTattooImageUrl);
+        EditText etLat = view.findViewById(R.id.etTattooLatitude);
+        EditText etLon = view.findViewById(R.id.etTattooLongitude);
 
         etStyle.setText(style);
         etDesc.setText(desc);
         etImage.setText(imageUrl);
+
+        double currentLat = (latitude != null) ? latitude : DEFAULT_LAT;
+        double currentLon = (longitude != null) ? longitude : DEFAULT_LON;
+        etLat.setText(String.valueOf(currentLat));
+        etLon.setText(String.valueOf(currentLon));
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Editar tatuaje")
@@ -204,6 +211,9 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                     String newDesc = etDesc.getText().toString().trim();
                     String newImage = etImage.getText().toString().trim();
 
+                    String latText = etLat.getText().toString().trim().replace(",", ".");
+                    String lonText = etLon.getText().toString().trim().replace(",", ".");
+
                     if (newStyle.isEmpty() || newDesc.isEmpty()) {
                         Toast.makeText(this, "Estilo y descripción son obligatorios", Toast.LENGTH_SHORT).show();
                         return;
@@ -218,6 +228,22 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                         return;
                     }
 
+                    double newLat;
+                    double newLon;
+
+                    try {
+                        newLat = Double.parseDouble(latText);
+                        newLon = Double.parseDouble(lonText);
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(this, "Latitud/Longitud inválidas", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (newLat < -90 || newLat > 90 || newLon < -180 || newLon > 180) {
+                        Toast.makeText(this, "Coordenadas fuera de rango", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     Tattoo updated = Tattoo.builder()
                             .clientId(clientId)
                             .professionalId(professionalId)
@@ -228,13 +254,24 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                             .sessions(sessions)
                             .coverUp(coverUp)
                             .color(color)
+                            .latitude(newLat)
+                            .longitude(newLon)
                             .build();
 
                     presenter.updateTattoo(tattooId, updated);
+
+                    latitude = newLat;
+                    longitude = newLon;
+
+                    if (pointAnnotationManager != null) {
+                        pointAnnotationManager.deleteAll();
+                        addMarker(newLat, newLon, "Tattoo location");
+                        setCameraPosition(newLat, newLon, DEFAULT_ZOOM);
+                    }
+
                     dialog.dismiss();
                 })
         );
-
         dialog.show();
     }
 
