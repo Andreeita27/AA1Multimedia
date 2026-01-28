@@ -6,12 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {FavoriteTattoo.class}, version = 4)
+@Database(entities = {FavoriteTattoo.class, LocalImage.class}, version = 5)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
 
     public abstract FavoriteTattooDao favoriteTattooDao();
+
+    public abstract LocalImageDao localImageDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
