@@ -1,6 +1,7 @@
 package com.svalero.RosasTattoo.view;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -39,7 +40,16 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         presenter = new ProfessionalListPresenter(this);
         presenter.loadProfessionals();
 
-        findViewById(R.id.btnAddProfessional).setOnClickListener(v -> showProfessionalDialog(null));
+        findViewById(R.id.btnAddProfessional).setOnClickListener(v -> {
+            Intent intent = new Intent(ProfessionalListView.this, RegisterProfessionalView.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadProfessionals();
     }
 
     @Override
@@ -86,21 +96,22 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         EditText etYears = view.findViewById(R.id.etProfessionalYears);
         CheckBox cbBooks = view.findViewById(R.id.cbProfessionalBooksOpened);
 
-        boolean editing = existing != null;
-
-        if (editing) {
-            etName.setText(existing.getProfessionalName());
-            etBirth.setText(existing.getBirthDate());
-            etDesc.setText(existing.getDescription());
-            etPhoto.setText(existing.getProfilePhoto());
-            etYears.setText(String.valueOf(existing.getYearsExperience()));
-            cbBooks.setChecked(existing.isBooksOpened());
+        if (existing == null) {
+            showError("Para crear un profesional usa el botón Añadir");
+            return;
         }
 
+        etName.setText(existing.getProfessionalName());
+        etBirth.setText(existing.getBirthDate());
+        etDesc.setText(existing.getDescription());
+        etPhoto.setText(existing.getProfilePhoto());
+        etYears.setText(String.valueOf(existing.getYearsExperience()));
+        cbBooks.setChecked(existing.isBooksOpened());
+
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(editing ? "Editar profesional" : "Añadir profesional")
+                .setTitle("Editar profesional")
                 .setView(view)
-                .setPositiveButton(editing ? "Guardar" : "Crear", null)
+                .setPositiveButton("Guardar", null)
                 .setNegativeButton("Cancelar", null)
                 .create();
 
@@ -131,12 +142,7 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
                     .yearsExperience(years)
                     .build();
 
-            if (editing) {
-                presenter.updateProfessional(existing.getId(), p);
-            } else {
-                presenter.registerProfessional(p);
-            }
-
+            presenter.updateProfessional(existing.getId(), p);
             dialog.dismiss();
         }));
 
