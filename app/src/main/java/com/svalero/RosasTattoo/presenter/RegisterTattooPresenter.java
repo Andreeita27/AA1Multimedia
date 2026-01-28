@@ -18,7 +18,7 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
     }
 
     @Override
-    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl) {
+    public void registerTattoo(long clientId, long professionalId, String style, String description, String imageUrl, Double latitude, Double longitude) {
         if (style == null || style.trim().isEmpty()) {
             view.showError("El estilo es obligatorio");
             return;
@@ -29,7 +29,7 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
             return;
         }
 
-        model.registerTattoo(clientId, professionalId, style, description, imageUrl,
+        model.registerTattoo(clientId, professionalId, style, description, imageUrl, latitude, longitude,
                 new RegisterTattooContract.Model.OnRegisterTattooListener() {
                     @Override
                     public void onRegisterTattooSuccess(String message) {

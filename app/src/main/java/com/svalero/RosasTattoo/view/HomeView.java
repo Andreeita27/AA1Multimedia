@@ -23,8 +23,5 @@ public class HomeView extends BaseView {
         findViewById(R.id.btnSaved).setOnClickListener(v ->
                 startActivity(new Intent(this, FavoriteTattooListView.class)));
 
-        findViewById(R.id.btnMap).setOnClickListener(v ->
-                startActivity(new Intent(this, ConventionMapView.class)));
-
     }
 }

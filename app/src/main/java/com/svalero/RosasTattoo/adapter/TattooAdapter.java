@@ -83,7 +83,6 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
                     TattooDetailView.class
             );
 
-            // básicos
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_ID, tattoo.getId());
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_STYLE, tattoo.getStyle());
             intent.putExtra(TattooDetailView.EXTRA_TATTOO_DESC, tattoo.getTattooDescription());
@@ -94,6 +93,13 @@ public class TattooAdapter extends RecyclerView.Adapter<TattooAdapter.TattooView
             intent.putExtra(TattooDetailView.EXTRA_SESSIONS, tattoo.getSessions());
             intent.putExtra(TattooDetailView.EXTRA_COVERUP, tattoo.isCoverUp());
             intent.putExtra(TattooDetailView.EXTRA_COLOR, tattoo.isColor());
+
+            if (tattoo.getLatitude() != null) {
+                intent.putExtra(TattooDetailView.EXTRA_LATITUDE, tattoo.getLatitude());
+            }
+            if (tattoo.getLongitude() != null) {
+                intent.putExtra(TattooDetailView.EXTRA_LONGITUDE, tattoo.getLongitude());
+            }
 
             holder.itemView.getContext().startActivity(intent);
         });

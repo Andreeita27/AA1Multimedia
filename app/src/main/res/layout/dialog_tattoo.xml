@@ -28,4 +28,18 @@
         android:hint="@string/tattoo_image"
         android:layout_marginTop="8dp" />
 
+    <EditText
+        android:id="@+id/etTattooLatitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/latitude"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <EditText
+        android:id="@+id/etTattooLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/longitude"
+        android:inputType="numberDecimal|numberSigned" />
+
 </LinearLayout>
