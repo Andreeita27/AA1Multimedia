@@ -3,9 +3,10 @@ package com.svalero.RosasTattoo.contract;
 public interface RegisterClientContract {
 
     interface Model {
+
         interface OnRegisterClientListener {
-            void onRegisterClientSuccess(String message);
-            void onRegisterClientError(String message);
+            void onRegisterClientSuccess(String messageKey);
+            void onRegisterClientError(String messageKey);
         }
 
         void registerClient(String clientName, String clientSurname, String email, String phone,
@@ -14,8 +15,8 @@ public interface RegisterClientContract {
     }
 
     interface View {
-        void showMessage(String message);
-        void showError(String message);
+        void showMessage(String messageKey);
+        void showError(String messageKey);
         void clearForm();
     }
 

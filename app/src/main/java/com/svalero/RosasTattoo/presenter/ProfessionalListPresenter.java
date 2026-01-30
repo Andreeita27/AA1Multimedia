@@ -27,18 +27,19 @@ public class ProfessionalListPresenter implements ProfessionalListContract.Prese
     @Override
     public void registerProfessional(Professional professional) {
         if (professional.getProfessionalName() == null || professional.getProfessionalName().trim().isEmpty()) {
-            view.showError("El nombre es obligatorio");
+            view.showError("error_name_required");
             return;
         }
         if (professional.getDescription() == null || professional.getDescription().trim().isEmpty()) {
-            view.showError("La descripción es obligatoria");
+            view.showError("error_description_required");
             return;
         }
 
         if (professional.getBirthDate() != null && !professional.getBirthDate().trim().isEmpty()) {
-            try { LocalDate.parse(professional.getBirthDate().trim()); }
-            catch (Exception e) {
-                view.showError("Fecha inválida (YYYY-MM-DD)");
+            try {
+                LocalDate.parse(professional.getBirthDate().trim());
+            } catch (Exception e) {
+                view.showError("error_invalid_date_format");
                 return;
             }
         }
@@ -49,17 +50,18 @@ public class ProfessionalListPresenter implements ProfessionalListContract.Prese
     @Override
     public void updateProfessional(long id, Professional professional) {
         if (professional.getProfessionalName() == null || professional.getProfessionalName().trim().isEmpty()) {
-            view.showError("El nombre es obligatorio");
+            view.showError("error_name_required");
             return;
         }
         if (professional.getDescription() == null || professional.getDescription().trim().isEmpty()) {
-            view.showError("La descripción es obligatoria");
+            view.showError("error_description_required");
             return;
         }
         if (professional.getBirthDate() != null && !professional.getBirthDate().trim().isEmpty()) {
-            try { LocalDate.parse(professional.getBirthDate().trim()); }
-            catch (Exception e) {
-                view.showError("Fecha inválida (YYYY-MM-DD)");
+            try {
+                LocalDate.parse(professional.getBirthDate().trim());
+            } catch (Exception e) {
+                view.showError("error_invalid_date_format");
                 return;
             }
         }
@@ -78,18 +80,18 @@ public class ProfessionalListPresenter implements ProfessionalListContract.Prese
     }
 
     @Override
-    public void onLoadError(String message) {
-        view.showError(message);
+    public void onLoadError(String messageKey) {
+        view.showError(messageKey);
     }
 
     @Override
-    public void onSuccess(String message) {
-        view.showMessage(message);
+    public void onSuccess(String messageKey) {
+        view.showMessage(messageKey);
         view.refreshList();
     }
 
     @Override
-    public void onError(String message) {
-        view.showError(message);
+    public void onError(String messageKey) {
+        view.showError(messageKey);
     }
 }

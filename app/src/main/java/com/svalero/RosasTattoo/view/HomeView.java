@@ -12,6 +12,10 @@ public class HomeView extends BaseView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_home);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.home_title));
+        }
+
         findViewById(R.id.btnShowroom).setOnClickListener(v ->
                 startActivity(new Intent(this, TattooListView.class)));
 
@@ -21,8 +25,7 @@ public class HomeView extends BaseView {
         findViewById(R.id.btnSaved).setOnClickListener(v ->
                 startActivity(new Intent(this, FavoriteTattooListView.class)));
 
-        findViewById(R.id.btnAddClient).setOnClickListener(v -> {
-            startActivity(new Intent(this, RegisterClientView.class));
-        });
+        findViewById(R.id.btnAddClient).setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterClientView.class)));
     }
 }

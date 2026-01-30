@@ -3,6 +3,7 @@ package com.svalero.RosasTattoo.view;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,5 +48,27 @@ public class BaseView extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected String resolveMessage(String messageKey) {
+        if (messageKey == null) {
+            return getString(R.string.error_unknown);
+        }
+
+        int resId = getResources().getIdentifier(
+                messageKey,
+                "string",
+                getPackageName()
+        );
+
+        if (resId != 0) {
+            return getString(resId);
+        }
+
+        return messageKey;
+    }
+
+    protected void showToast(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 }

@@ -8,8 +8,8 @@ import java.util.List;
 
 public class TattooListPresenter implements TattooListContract.Presenter, TattooListContract.Model.OnLoadTattoosListener {
 
-    private TattooListContract.View view;
-    private TattooListContract.Model model;
+    private final TattooListContract.View view;
+    private final TattooListContract.Model model;
 
     public TattooListPresenter(TattooListContract.View view) {
         this.view = view;
@@ -27,7 +27,7 @@ public class TattooListPresenter implements TattooListContract.Presenter, Tattoo
     }
 
     @Override
-    public void onLoadTattoosError(String message) {
-        view.showError(message);
+    public void onLoadTattoosError(String messageKey) {
+        view.showError(messageKey);
     }
 }

@@ -5,8 +5,6 @@ import com.svalero.RosasTattoo.api.RosasTattooApiInterface;
 import com.svalero.RosasTattoo.contract.RegisterClientContract;
 import com.svalero.RosasTattoo.domain.Client;
 
-import java.time.LocalDate;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,15 +33,15 @@ public class RegisterClientModel implements RegisterClientContract.Model {
             @Override
             public void onResponse(Call<Client> call, Response<Client> response) {
                 if (response.isSuccessful()) {
-                    listener.onRegisterClientSuccess("Cliente registrado correctamente");
+                    listener.onRegisterClientSuccess("client_registered");
                 } else {
-                    listener.onRegisterClientError("No se ha podido registrar el cliente (HTTP " + response.code() + ")");
+                    listener.onRegisterClientError("error_register_client_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Client> call, Throwable t) {
-                listener.onRegisterClientError("No se ha podido conectar con el servidor");
+                listener.onRegisterClientError("error_server_connection");
             }
         });
     }

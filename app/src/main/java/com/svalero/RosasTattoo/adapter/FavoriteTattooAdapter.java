@@ -1,5 +1,6 @@
 package com.svalero.RosasTattoo.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,31 +49,33 @@ public class FavoriteTattooAdapter extends RecyclerView.Adapter<FavoriteTattooAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FavoriteTattoo item = data.get(position);
+        Context context = holder.itemView.getContext();
 
-        String style = safe(item.getStyle(), "Sin estilo");
+        String style = safe(item.getStyle(), context.getString(R.string.no_style));
         holder.tvTattooId.setText(style);
 
-        String desc = safe(item.getTattooDescription(), "Sin descripción");
-        String date = safe(item.getTattooDate(), "Sin fecha");
+        String desc = safe(item.getTattooDescription(), context.getString(R.string.no_description));
+        String date = safe(item.getTattooDate(), context.getString(R.string.no_date));
         holder.tvTattooInfo.setText(desc + " · " + date);
 
-        AppDatabase db = AppDatabase.getInstance(holder.itemView.getContext());
+        AppDatabase db = AppDatabase.getInstance(context);
         String localUri = db.localImageDao().getImageUri("TATTOO", item.getTattooId());
 
         String toLoad = (localUri != null && !localUri.trim().isEmpty())
                 ? localUri
                 : item.getImageUrl();
 
-        Glide.with(holder.itemView.getContext())
+        Glide.with(context)
                 .load(toLoad)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .error(R.drawable.ic_image_placeholder)
                 .into(holder.ivTattooImage);
 
-        // Checkbox IG
         holder.cbInstagram.setOnCheckedChangeListener(null);
         holder.cbInstagram.setChecked(item.isInstagram());
-        holder.cbInstagram.setContentDescription("Marcar para publicar este tatuaje en Instagram");
+        holder.cbInstagram.setContentDescription(
+                context.getString(R.string.instagram_checkbox_description)
+        );
 
         holder.cbInstagram.setOnCheckedChangeListener((buttonView, isChecked) -> {
             item.setInstagram(isChecked);

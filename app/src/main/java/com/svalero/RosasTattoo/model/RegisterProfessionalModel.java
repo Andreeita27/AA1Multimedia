@@ -38,19 +38,19 @@ public class RegisterProfessionalModel implements RegisterProfessionalContract.M
             public void onResponse(Call<Professional> call, Response<Professional> response) {
                 if (response.isSuccessful()) {
                     listener.onRegisterProfessionalSuccess(
-                            "Profesional registrado correctamente",
+                            "professional_registered",
                             response.body()
                     );
                 } else {
                     listener.onRegisterProfessionalError(
-                            "No se ha podido registrar el profesional (HTTP " + response.code() + ")"
+                            "error_register_professional_http"
                     );
                 }
             }
 
             @Override
             public void onFailure(Call<Professional> call, Throwable t) {
-                listener.onRegisterProfessionalError("No se ha podido conectar con el servidor");
+                listener.onRegisterProfessionalError("error_server_connection");
             }
         });
     }

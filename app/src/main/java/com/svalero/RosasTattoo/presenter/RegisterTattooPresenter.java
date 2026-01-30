@@ -23,20 +23,27 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
                                String imageUrl, Double latitude, Double longitude) {
 
         if (style == null || style.trim().isEmpty()) {
-            view.showError("El estilo es obligatorio");
+            view.showError("error_style_required");
             return;
         }
 
         if (description == null || description.trim().isEmpty()) {
-            view.showError("La descripción es obligatoria");
+            view.showError("error_description_required");
             return;
         }
 
-        model.registerTattoo(clientId, professionalId, style, description, imageUrl, latitude, longitude,
+        model.registerTattoo(
+                clientId,
+                professionalId,
+                style,
+                description,
+                imageUrl,
+                latitude,
+                longitude,
                 new RegisterTattooContract.Model.OnRegisterTattooListener() {
                     @Override
-                    public void onRegisterTattooSuccess(String message, Tattoo tattoo) {
-                        view.showMessage(message);
+                    public void onRegisterTattooSuccess(String messageKey, Tattoo tattoo) {
+                        view.showMessage(messageKey);
                         if (tattoo != null) {
                             view.onTattooRegistered(tattoo.getId());
                         } else {
@@ -45,10 +52,11 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
                     }
 
                     @Override
-                    public void onRegisterTattooError(String message) {
-                        view.showError(message);
+                    public void onRegisterTattooError(String messageKey) {
+                        view.showError(messageKey);
                     }
-                });
+                }
+        );
     }
 
     @Override
@@ -60,8 +68,8 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
             }
 
             @Override
-            public void onLoadClientsError(String message) {
-                view.showClientsError(message);
+            public void onLoadClientsError(String messageKey) {
+                view.showClientsError(messageKey);
             }
         });
     }
@@ -75,8 +83,8 @@ public class RegisterTattooPresenter implements RegisterTattooContract.Presenter
             }
 
             @Override
-            public void onLoadProfessionalsError(String message) {
-                view.showProfessionalsError(message);
+            public void onLoadProfessionalsError(String messageKey) {
+                view.showProfessionalsError(messageKey);
             }
         });
     }

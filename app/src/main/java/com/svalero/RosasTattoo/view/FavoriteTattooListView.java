@@ -27,6 +27,10 @@ public class FavoriteTattooListView extends BaseView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_tattoo_list_view);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_favorite));
+        }
+
         db = AppDatabase.getInstance(this);
 
         rvFavorites = findViewById(R.id.rvFavorites);

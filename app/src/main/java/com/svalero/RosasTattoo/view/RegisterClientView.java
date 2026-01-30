@@ -27,6 +27,10 @@ public class RegisterClientView extends BaseView implements RegisterClientContra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_client_view);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_client));
+        }
+
         etName = findViewById(R.id.etClientName);
         etSurname = findViewById(R.id.etClientSurname);
         etEmail = findViewById(R.id.etEmail);
@@ -48,13 +52,13 @@ public class RegisterClientView extends BaseView implements RegisterClientContra
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -7,13 +7,13 @@ public interface TattooDetailContract {
     interface Model {
 
         interface OnDeleteTattooListener {
-            void onDeleteTattooSuccess(String message);
-            void onDeleteTattooError(String message);
+            void onDeleteTattooSuccess(String messageKey);
+            void onDeleteTattooError(String messageKey);
         }
 
         interface OnUpdateTattooListener {
-            void onUpdateTattooSuccess(String message);
-            void onUpdateTattooError(String message);
+            void onUpdateTattooSuccess(String messageKey);
+            void onUpdateTattooError(String messageKey);
         }
 
         void deleteTattoo(long tattooId, OnDeleteTattooListener listener);
@@ -21,10 +21,10 @@ public interface TattooDetailContract {
     }
 
     interface View {
-        void showMessage(String message);
-        void showError(String message);
+        void showMessage(String messageKey);
+        void showError(String messageKey);
         void closeView();
-        void onTattooUpdated(String message);
+        void onTattooUpdated(String messageKey);
     }
 
     interface Presenter {

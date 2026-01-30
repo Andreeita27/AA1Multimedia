@@ -30,6 +30,10 @@ public class TattooListView extends BaseView implements TattooListContract.View 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tattoo_list_view);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_showroom));
+        }
+
         recyclerView = findViewById(R.id.rvTattoos);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,12 +62,12 @@ public class TattooListView extends BaseView implements TattooListContract.View 
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 }

@@ -11,8 +11,8 @@ public interface RegisterTattooContract {
     interface Model {
 
         interface OnRegisterTattooListener {
-            void onRegisterTattooSuccess(String message, Tattoo tattoo);
-            void onRegisterTattooError(String message);
+            void onRegisterTattooSuccess(String messageKey, Tattoo tattoo);
+            void onRegisterTattooError(String messageKey);
         }
 
         void registerTattoo(long clientId, long professionalId, String style, String description,
@@ -21,12 +21,12 @@ public interface RegisterTattooContract {
 
         interface OnLoadClientsListener {
             void onLoadClientsSuccess(List<Client> clients);
-            void onLoadClientsError(String message);
+            void onLoadClientsError(String messageKey);
         }
 
         interface OnLoadProfessionalsListener {
             void onLoadProfessionalsSuccess(List<Professional> professionals);
-            void onLoadProfessionalsError(String message);
+            void onLoadProfessionalsError(String messageKey);
         }
 
         void loadClients(OnLoadClientsListener listener);
@@ -34,13 +34,13 @@ public interface RegisterTattooContract {
     }
 
     interface View {
-        void showMessage(String message);
-        void showError(String message);
+        void showMessage(String messageKey);
+        void showError(String messageKey);
         void clearForm();
         void showClients(List<Client> clients);
         void showProfessionals(List<Professional> professionals);
-        void showClientsError(String message);
-        void showProfessionalsError(String message);
+        void showClientsError(String messageKey);
+        void showProfessionalsError(String messageKey);
         void onTattooRegistered(long tattooId);
     }
 

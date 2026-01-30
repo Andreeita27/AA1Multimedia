@@ -5,8 +5,8 @@ import com.svalero.RosasTattoo.domain.Professional;
 public interface RegisterProfessionalContract {
 
     interface View {
-        void showMessage(String message);
-        void showError(String error);
+        void showMessage(String messageKey);
+        void showError(String messageKey);
         void onProfessionalRegistered(Long professionalId);
         void close();
     }
@@ -30,8 +30,8 @@ public interface RegisterProfessionalContract {
                                   OnRegisterProfessionalListener listener);
 
         interface OnRegisterProfessionalListener {
-            void onRegisterProfessionalSuccess(String message, Professional professional);
-            void onRegisterProfessionalError(String message);
+            void onRegisterProfessionalSuccess(String messageKey, Professional professional);
+            void onRegisterProfessionalError(String messageKey);
         }
     }
 }

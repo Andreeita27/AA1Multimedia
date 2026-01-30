@@ -8,8 +8,8 @@ public class TattooDetailPresenter implements TattooDetailContract.Presenter,
         TattooDetailContract.Model.OnDeleteTattooListener,
         TattooDetailContract.Model.OnUpdateTattooListener {
 
-    private TattooDetailContract.View view;
-    private TattooDetailContract.Model model;
+    private final TattooDetailContract.View view;
+    private final TattooDetailContract.Model model;
 
     public TattooDetailPresenter(TattooDetailContract.View view) {
         this.view = view;
@@ -22,14 +22,14 @@ public class TattooDetailPresenter implements TattooDetailContract.Presenter,
     }
 
     @Override
-    public void onDeleteTattooSuccess(String message) {
-        view.showMessage(message);
+    public void onDeleteTattooSuccess(String messageKey) {
+        view.showMessage(messageKey);
         view.closeView();
     }
 
     @Override
-    public void onDeleteTattooError(String message) {
-        view.showError(message);
+    public void onDeleteTattooError(String messageKey) {
+        view.showError(messageKey);
     }
 
     @Override
@@ -38,12 +38,12 @@ public class TattooDetailPresenter implements TattooDetailContract.Presenter,
     }
 
     @Override
-    public void onUpdateTattooSuccess(String message) {
-        view.onTattooUpdated(message);
+    public void onUpdateTattooSuccess(String messageKey) {
+        view.onTattooUpdated(messageKey);
     }
 
     @Override
-    public void onUpdateTattooError(String message) {
-        view.showError(message);
+    public void onUpdateTattooError(String messageKey) {
+        view.showError(messageKey);
     }
 }

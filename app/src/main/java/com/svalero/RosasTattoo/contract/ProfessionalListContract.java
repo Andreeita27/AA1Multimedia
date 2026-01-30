@@ -9,12 +9,12 @@ public interface ProfessionalListContract {
 
         interface OnLoadProfessionalsListener {
             void onLoadSuccess(List<Professional> professionals);
-            void onLoadError(String message);
+            void onLoadError(String messageKey);
         }
 
         interface OnOperationListener {
-            void onSuccess(String message);
-            void onError(String message);
+            void onSuccess(String messageKey);
+            void onError(String messageKey);
         }
 
         void loadProfessionals(OnLoadProfessionalsListener listener);
@@ -25,8 +25,8 @@ public interface ProfessionalListContract {
 
     interface View {
         void showProfessionals(List<Professional> professionals);
-        void showMessage(String message);
-        void showError(String message);
+        void showMessage(String messageKey);
+        void showError(String messageKey);
         void refreshList();
     }
 

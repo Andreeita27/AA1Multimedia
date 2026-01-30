@@ -38,6 +38,10 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_professional_list_view);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_professionals));
+        }
+
         rvProfessionals = findViewById(R.id.rvProfessionals);
         rvProfessionals.setLayoutManager(new LinearLayoutManager(this));
 
@@ -72,7 +76,8 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
                                 .localImageDao()
                                 .upsert(new LocalImage("PROFESSIONAL", currentProfessionalId, uriString));
 
-                        showMessage("Imagen seleccionada");
+                        Toast.makeText(this, getString(R.string.image_selected), Toast.LENGTH_SHORT).show();
+
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -91,13 +96,13 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -113,9 +118,10 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
     @Override
     public void onDelete(Professional professional) {
         new AlertDialog.Builder(this)
-                .setMessage("¿Seguro que quieres borrar este profesional?")
-                .setPositiveButton("Borrar", (d, w) -> presenter.deleteProfessional(professional.getId()))
-                .setNegativeButton("Cancelar", null)
+                .setMessage(getString(R.string.confirm_delete_professional))
+                .setPositiveButton(getString(R.string.delete), (d, w) ->
+                        presenter.deleteProfessional(professional.getId()))
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
 
@@ -130,7 +136,7 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         CheckBox cbBooks = view.findViewById(R.id.cbProfessionalBooksOpened);
 
         if (existing == null) {
-            showError("Para crear un profesional usa el botón Añadir");
+            Toast.makeText(this, getString(R.string.use_add_button_to_create_professional), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -159,10 +165,10 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         });
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Editar profesional")
+                .setTitle(getString(R.string.edit_professional_title))
                 .setView(view)
-                .setPositiveButton("Guardar", null)
-                .setNegativeButton("Cancelar", null)
+                .setPositiveButton(getString(R.string.save), null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create();
 
         dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
@@ -176,9 +182,10 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
 
             int years = 0;
             if (!yearsText.isEmpty()) {
-                try { years = Integer.parseInt(yearsText); }
-                catch (Exception e) {
-                    showError("Años de experiencia debe ser un número");
+                try {
+                    years = Integer.parseInt(yearsText);
+                } catch (Exception e) {
+                    Toast.makeText(this, getString(R.string.error_years_must_be_number), Toast.LENGTH_LONG).show();
                     return;
                 }
             }

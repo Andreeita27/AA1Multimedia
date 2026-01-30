@@ -5,10 +5,11 @@ import com.svalero.RosasTattoo.model.RegisterClientModel;
 
 import java.time.LocalDate;
 
-public class RegisterClientPresenter implements RegisterClientContract.Presenter, RegisterClientContract.Model.OnRegisterClientListener {
+public class RegisterClientPresenter implements RegisterClientContract.Presenter,
+        RegisterClientContract.Model.OnRegisterClientListener {
 
-    private RegisterClientContract.View view;
-    private RegisterClientContract.Model model;
+    private final RegisterClientContract.View view;
+    private final RegisterClientContract.Model model;
 
     public RegisterClientPresenter(RegisterClientContract.View view) {
         this.view = view;
@@ -20,44 +21,48 @@ public class RegisterClientPresenter implements RegisterClientContract.Presenter
                                String birthDate, boolean showPhoto) {
 
         if (clientName == null || clientName.trim().isEmpty()) {
-            view.showError("El nombre es obligatorio");
+            view.showError("error_client_name_required");
             return;
         }
 
         if (clientSurname == null || clientSurname.trim().isEmpty()) {
-            view.showError("El apellido es obligatorio");
+            view.showError("error_client_surname_required");
             return;
         }
 
         if (email == null || email.trim().isEmpty()) {
-            view.showError("El email es obligatorio");
+            view.showError("error_client_email_required");
             return;
         }
 
         if (birthDate != null && !birthDate.trim().isEmpty()) {
             try {
-                LocalDate.parse(birthDate.trim()); // espera YYYY-MM-DD
+                LocalDate.parse(birthDate.trim());
             } catch (Exception e) {
-                view.showError("La fecha debe tener formato YYYY-MM-DD");
+                view.showError("error_invalid_date_format");
                 return;
             }
         }
 
-        model.registerClient(clientName.trim(), clientSurname.trim(), email.trim(),
+        model.registerClient(
+                clientName.trim(),
+                clientSurname.trim(),
+                email.trim(),
                 phone == null ? "" : phone.trim(),
                 birthDate == null ? "" : birthDate.trim(),
                 showPhoto,
-                this);
+                this
+        );
     }
 
     @Override
-    public void onRegisterClientSuccess(String message) {
-        view.showMessage(message);
+    public void onRegisterClientSuccess(String messageKey) {
+        view.showMessage(messageKey);
         view.clearForm();
     }
 
     @Override
-    public void onRegisterClientError(String message) {
-        view.showError(message);
+    public void onRegisterClientError(String messageKey) {
+        view.showError(messageKey);
     }
 }

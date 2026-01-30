@@ -22,13 +22,13 @@ public class ProfessionalListModel implements ProfessionalListContract.Model {
                 if (response.isSuccessful() && response.body() != null) {
                     listener.onLoadSuccess(response.body());
                 } else {
-                    listener.onLoadError("No se ha podido cargar (HTTP " + response.code() + ")");
+                    listener.onLoadError("error_load_professionals_http");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Professional>> call, Throwable t) {
-                listener.onLoadError("No se ha podido conectar con el servidor");
+                listener.onLoadError("error_server_connection");
             }
         });
     }
@@ -40,15 +40,15 @@ public class ProfessionalListModel implements ProfessionalListContract.Model {
             @Override
             public void onResponse(Call<Professional> call, Response<Professional> response) {
                 if (response.isSuccessful()) {
-                    listener.onSuccess("Profesional registrado correctamente");
+                    listener.onSuccess("professional_registered");
                 } else {
-                    listener.onError("No se ha podido registrar (HTTP " + response.code() + ")");
+                    listener.onError("error_register_professional_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Professional> call, Throwable t) {
-                listener.onError("No se ha podido conectar con el servidor");
+                listener.onError("error_server_connection");
             }
         });
     }
@@ -60,15 +60,15 @@ public class ProfessionalListModel implements ProfessionalListContract.Model {
             @Override
             public void onResponse(Call<Professional> call, Response<Professional> response) {
                 if (response.isSuccessful()) {
-                    listener.onSuccess("Profesional actualizado correctamente");
+                    listener.onSuccess("professional_updated");
                 } else {
-                    listener.onError("No se ha podido actualizar (HTTP " + response.code() + ")");
+                    listener.onError("error_update_professional_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Professional> call, Throwable t) {
-                listener.onError("No se ha podido conectar con el servidor");
+                listener.onError("error_server_connection");
             }
         });
     }
@@ -80,15 +80,15 @@ public class ProfessionalListModel implements ProfessionalListContract.Model {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    listener.onSuccess("Profesional eliminado correctamente");
+                    listener.onSuccess("professional_deleted");
                 } else {
-                    listener.onError("No se ha podido eliminar (HTTP " + response.code() + ")");
+                    listener.onError("error_delete_professional_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                listener.onError("No se ha podido conectar con el servidor");
+                listener.onError("error_server_connection");
             }
         });
     }

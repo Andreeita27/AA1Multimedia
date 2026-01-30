@@ -1,7 +1,6 @@
 package com.svalero.RosasTattoo.view;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -31,6 +30,10 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_professional_view);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_add_professional));
+        }
+
         presenter = new RegisterProfessionalPresenter(this);
 
         etName = findViewById(R.id.etProfessionalName);
@@ -48,12 +51,12 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
                         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
                         try {
                             getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                        } catch (Exception ignored) {
-                        }
+                        } catch (Exception ignored) { }
 
                         selectedImageUri = uri.toString();
                         etPhoto.setText(selectedImageUri);
-                        showMessage("Imagen seleccionada");
+
+                        Toast.makeText(this, getString(R.string.image_selected), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -79,7 +82,7 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
             try {
                 years = Integer.parseInt(yearsText);
             } catch (Exception e) {
-                showError("Años de experiencia debe ser un número");
+                Toast.makeText(this, getString(R.string.error_years_must_be_number), Toast.LENGTH_LONG).show();
                 return;
             }
         }
@@ -104,13 +107,13 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 
     @Override

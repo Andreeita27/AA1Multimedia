@@ -18,15 +18,15 @@ public class TattooDetailModel implements TattooDetailContract.Model {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    listener.onDeleteTattooSuccess("Tatuaje eliminado correctamente");
+                    listener.onDeleteTattooSuccess("tattoo_deleted");
                 } else {
-                    listener.onDeleteTattooError("No se ha podido eliminar (HTTP " + response.code() + ")");
+                    listener.onDeleteTattooError("error_delete_tattoo_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                listener.onDeleteTattooError("No se ha podido conectar con el servidor");
+                listener.onDeleteTattooError("error_server_connection");
             }
         });
     }
@@ -38,15 +38,15 @@ public class TattooDetailModel implements TattooDetailContract.Model {
             @Override
             public void onResponse(Call<Tattoo> call, Response<Tattoo> response) {
                 if (response.isSuccessful()) {
-                    listener.onUpdateTattooSuccess("Tatuaje actualizado correctamente");
+                    listener.onUpdateTattooSuccess("tattoo_updated");
                 } else {
-                    listener.onUpdateTattooError("No se ha podido actualizar (HTTP " + response.code() + ")");
+                    listener.onUpdateTattooError("error_update_tattoo_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Tattoo> call, Throwable t) {
-                listener.onUpdateTattooError("No se ha podido conectar con el servidor");
+                listener.onUpdateTattooError("error_server_connection");
             }
         });
     }

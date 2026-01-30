@@ -24,7 +24,7 @@ public class RegisterProfessionalPresenter implements RegisterProfessionalContra
                                      boolean booksOpened) {
 
         if (professionalName == null || professionalName.trim().isEmpty()) {
-            view.showError("El nombre es obligatorio");
+            view.showError("error_name_required");
             return;
         }
 
@@ -40,8 +40,8 @@ public class RegisterProfessionalPresenter implements RegisterProfessionalContra
     }
 
     @Override
-    public void onRegisterProfessionalSuccess(String message, Professional professional) {
-        view.showMessage(message);
+    public void onRegisterProfessionalSuccess(String messageKey, Professional professional) {
+        view.showMessage(messageKey);
 
         if (professional != null) {
             view.onProfessionalRegistered(professional.getId());
@@ -51,7 +51,7 @@ public class RegisterProfessionalPresenter implements RegisterProfessionalContra
     }
 
     @Override
-    public void onRegisterProfessionalError(String message) {
-        view.showError(message);
+    public void onRegisterProfessionalError(String messageKey) {
+        view.showError(messageKey);
     }
 }

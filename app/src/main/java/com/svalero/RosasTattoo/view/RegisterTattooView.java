@@ -35,8 +35,8 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
     private AutoCompleteTextView actvProfessional;
     private RegisterTattooContract.Presenter presenter;
 
-    private List<Client> clientList = new ArrayList<>();
-    private List<Professional> professionalList = new ArrayList<>();
+    private final List<Client> clientList = new ArrayList<>();
+    private final List<Professional> professionalList = new ArrayList<>();
     private Client selectedClient;
     private Professional selectedProfessional;
 
@@ -51,6 +51,10 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_tattoo_view);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_add_tattoo));
+        }
 
         actvClient = findViewById(R.id.actvClient);
         actvProfessional = findViewById(R.id.actvProfessional);
@@ -79,7 +83,8 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
 
                         selectedImageUri = uri.toString();
                         etImageUrl.setText(selectedImageUri);
-                        Toast.makeText(this, "Imagen seleccionada", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(this, getString(R.string.image_selected), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -91,10 +96,10 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
         btnRegisterTattoo.setOnClickListener(v -> {
             String style = etStyle.getText().toString().trim();
             String description = etDescription.getText().toString().trim();
-            String imageUrl = etImageUrl.getText().toString().trim(); // aquí va la URI
+            String imageUrl = etImageUrl.getText().toString().trim();
 
             if (selectedClient == null || selectedProfessional == null) {
-                Toast.makeText(this, "Selecciona cliente y profesional", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_select_client_and_professional), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -105,11 +110,11 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
             if (longitude == null) longitude = DEFAULT_LON;
 
             if (latitude < -90 || latitude > 90) {
-                Toast.makeText(this, "Latitud inválida (-90 a 90)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_invalid_latitude), Toast.LENGTH_SHORT).show();
                 return;
             }
             if (longitude < -180 || longitude > 180) {
-                Toast.makeText(this, "Longitud inválida (-180 a 180)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_invalid_longitude), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -149,9 +154,8 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
         );
         actvClient.setAdapter(adapter);
 
-        actvClient.setOnItemClickListener((parent, view, position, id) -> {
-            selectedClient = (Client) parent.getItemAtPosition(position);
-        });
+        actvClient.setOnItemClickListener((parent, view, position, id) ->
+                selectedClient = (Client) parent.getItemAtPosition(position));
     }
 
     @Override
@@ -166,9 +170,8 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
         );
         actvProfessional.setAdapter(adapter);
 
-        actvProfessional.setOnItemClickListener((parent, view, position, id) -> {
-            selectedProfessional = (Professional) parent.getItemAtPosition(position);
-        });
+        actvProfessional.setOnItemClickListener((parent, view, position, id) ->
+                selectedProfessional = (Professional) parent.getItemAtPosition(position));
     }
 
     @Override
@@ -182,23 +185,23 @@ public class RegisterTattooView extends BaseView implements RegisterTattooContra
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showClientsError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showClientsError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showProfessionalsError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showProfessionalsError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 
     @Override

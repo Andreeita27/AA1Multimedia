@@ -87,6 +87,10 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tattoo_detail_view);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_showroom));
+        }
+
         ivTattoo = findViewById(R.id.ivTattoo);
         tvStyle = findViewById(R.id.tvStyle);
         tvDesc = findViewById(R.id.tvDesc);
@@ -110,12 +114,10 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         color = intent.getBooleanExtra(EXTRA_COLOR, false);
 
         if (intent.hasExtra(EXTRA_LATITUDE)) {
-            double lat = intent.getDoubleExtra(EXTRA_LATITUDE, DEFAULT_LAT);
-            latitude = lat;
+            latitude = intent.getDoubleExtra(EXTRA_LATITUDE, DEFAULT_LAT);
         }
         if (intent.hasExtra(EXTRA_LONGITUDE)) {
-            double lon = intent.getDoubleExtra(EXTRA_LONGITUDE, DEFAULT_LON);
-            longitude = lon;
+            longitude = intent.getDoubleExtra(EXTRA_LONGITUDE, DEFAULT_LON);
         }
 
         tvStyle.setText(style);
@@ -144,7 +146,7 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
 
                         refreshTattooImage();
 
-                        Toast.makeText(this, "Imagen seleccionada", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.image_selected), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -169,7 +171,6 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                 .into(ivTattoo);
     }
 
-    // MAPBOX
     private void initMap() {
         if (mapView == null) return;
 
@@ -180,7 +181,7 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 initializePointAnnotationManager();
-                addMarker(lat, lon, "Tattoo location");
+                addMarker(lat, lon, getString(R.string.tattoo_location));
                 setCameraPosition(lat, lon, DEFAULT_ZOOM);
             }
         });
@@ -254,10 +255,10 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
         etLon.setText(String.valueOf(currentLon));
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Editar tatuaje")
+                .setTitle(getString(R.string.edit_tattoo))
                 .setView(view)
-                .setPositiveButton("Guardar", null)
-                .setNegativeButton("Cancelar", null)
+                .setPositiveButton(getString(R.string.save), null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create();
 
         dialog.setOnShowListener(d ->
@@ -271,16 +272,14 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                     String lonText = etLon.getText().toString().trim().replace(",", ".");
 
                     if (newStyle.isEmpty() || newDesc.isEmpty()) {
-                        Toast.makeText(this, "Estilo y descripción son obligatorios", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.error_style_and_description_required), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (newImage.isEmpty()) newImage = imageUrl;
 
                     if (tattooDate == null || tattooDate.trim().isEmpty() || clientId <= 0 || professionalId <= 0) {
-                        Toast.makeText(this,
-                                "Faltan datos obligatorios (cliente/profesional/fecha). Vuelve a abrir el detalle desde la lista.",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.error_missing_required_data_reopen), Toast.LENGTH_LONG).show();
                         return;
                     }
 
@@ -291,12 +290,12 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
                         newLat = Double.parseDouble(latText);
                         newLon = Double.parseDouble(lonText);
                     } catch (NumberFormatException e) {
-                        Toast.makeText(this, "Latitud/Longitud inválidas", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.error_invalid_lat_lon), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (newLat < -90 || newLat > 90 || newLon < -180 || newLon > 180) {
-                        Toast.makeText(this, "Coordenadas fuera de rango", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.error_coordinates_out_of_range), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -328,7 +327,7 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
 
                     if (pointAnnotationManager != null) {
                         pointAnnotationManager.deleteAll();
-                        addMarker(newLat, newLon, "Tattoo location");
+                        addMarker(newLat, newLon, getString(R.string.tattoo_location));
                         setCameraPosition(newLat, newLon, DEFAULT_ZOOM);
                     }
 
@@ -342,24 +341,25 @@ public class TattooDetailView extends BaseView implements TattooDetailContract.V
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
 
-        if (message != null && message.toLowerCase().contains("elim")) {
-            AppDatabase db = AppDatabase.getInstance(this);
-            db.favoriteTattooDao().deleteByTattooId(tattooId);
+        if ("tattoo_deleted".equals(messageKey)) {
+            AppDatabase.getInstance(this)
+                    .favoriteTattooDao()
+                    .deleteByTattooId(tattooId);
         }
     }
 
     @Override
-    public void onTattooUpdated(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void onTattooUpdated(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 
     @Override

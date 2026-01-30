@@ -44,22 +44,15 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
             @Override
             public void onResponse(Call<Tattoo> call, Response<Tattoo> response) {
                 if (response.isSuccessful()) {
-                    listener.onRegisterTattooSuccess("Tatuaje registrado correctamente", response.body());
+                    listener.onRegisterTattooSuccess("tattoo_registered", response.body());
                 } else {
-                    String error = "HTTP " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            error += " - " + response.errorBody().string();
-                        }
-                    } catch (Exception ignored) {}
-
-                    listener.onRegisterTattooError("No se ha podido registrar el tatuaje: " + error);
+                    listener.onRegisterTattooError("error_register_tattoo_http");
                 }
             }
 
             @Override
             public void onFailure(Call<Tattoo> call, Throwable t) {
-                listener.onRegisterTattooError("No se ha podido conectar con el servidor");
+                listener.onRegisterTattooError("error_server_connection");
             }
         });
     }
@@ -75,13 +68,13 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
                 if (response.isSuccessful() && response.body() != null) {
                     listener.onLoadClientsSuccess(response.body());
                 } else {
-                    listener.onLoadClientsError("No se han podido cargar los clientes");
+                    listener.onLoadClientsError("error_load_clients");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Client>> call, Throwable t) {
-                listener.onLoadClientsError("No se ha podido conectar con el servidor");
+                listener.onLoadClientsError("error_server_connection");
             }
         });
     }
@@ -97,13 +90,13 @@ public class RegisterTattooModel implements RegisterTattooContract.Model {
                 if (response.isSuccessful() && response.body() != null) {
                     listener.onLoadProfessionalsSuccess(response.body());
                 } else {
-                    listener.onLoadProfessionalsError("No se han podido cargar los profesionales");
+                    listener.onLoadProfessionalsError("error_load_professionals");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Professional>> call, Throwable t) {
-                listener.onLoadProfessionalsError("No se ha podido conectar con el servidor");
+                listener.onLoadProfessionalsError("error_server_connection");
             }
         });
     }

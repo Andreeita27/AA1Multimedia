@@ -10,7 +10,7 @@ public interface TattooListContract {
 
         interface OnLoadTattoosListener {
             void onLoadTattoosSuccess(List<Tattoo> tattoos);
-            void onLoadTattoosError(String message);
+            void onLoadTattoosError(String messageKey);
         }
 
         void loadTattoos(OnLoadTattoosListener listener);
@@ -18,8 +18,8 @@ public interface TattooListContract {
 
     interface View {
         void showTattoos(List<Tattoo> tattoos);
-        void showMessage(String message);
-        void showError(String message);
+        void showMessage(String messageKey);
+        void showError(String messageKey);
     }
 
     interface Presenter {

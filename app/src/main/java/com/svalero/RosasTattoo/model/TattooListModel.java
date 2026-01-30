@@ -24,13 +24,13 @@ public class TattooListModel implements TattooListContract.Model {
                 if (response.isSuccessful() && response.body() != null) {
                     listener.onLoadTattoosSuccess(response.body());
                 } else {
-                    listener.onLoadTattoosError("No se han podido cargar los tatuajes");
+                    listener.onLoadTattoosError("error_load_tattoos");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Tattoo>> call, Throwable t) {
-                listener.onLoadTattoosError("No se ha podido conectar con el servidor");
+                listener.onLoadTattoosError("error_server_connection");
             }
         });
     }

@@ -41,19 +41,28 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
     @NonNull
     @Override
     public ProfessionalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.professional_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.professional_item, parent, false);
         return new ProfessionalViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProfessionalViewHolder holder, int position) {
         Professional p = professionals.get(position);
+        Context context = holder.itemView.getContext();
 
         holder.tvName.setText(p.getProfessionalName());
         holder.tvDesc.setText(p.getDescription());
-        holder.tvExtra.setText("Exp: " + p.getYearsExperience() + " | Books: " + (p.isBooksOpened() ? "Sí" : "No"));
 
-        Context context = holder.itemView.getContext();
+        String extraInfo = context.getString(
+                R.string.professional_extra_info,
+                p.getYearsExperience(),
+                p.isBooksOpened()
+                        ? context.getString(R.string.yes)
+                        : context.getString(R.string.no)
+        );
+        holder.tvExtra.setText(extraInfo);
+
         String imageUri = AppDatabase.getInstance(context)
                 .localImageDao()
                 .getImageUri("PROFESSIONAL", p.getId());
@@ -63,6 +72,13 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
         } else {
             holder.ivAvatar.setImageResource(R.drawable.ic_image_placeholder);
         }
+
+        holder.btnEdit.setContentDescription(
+                context.getString(R.string.edit_professional)
+        );
+        holder.btnDelete.setContentDescription(
+                context.getString(R.string.delete_professional)
+        );
 
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(p));
         holder.btnDelete.setOnClickListener(v -> listener.onDelete(p));
