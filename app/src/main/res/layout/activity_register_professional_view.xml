@@ -59,7 +59,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#888888"
-                android:inputType="date" />
+                android:inputType="date"
+                android:imeOptions="actionDone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

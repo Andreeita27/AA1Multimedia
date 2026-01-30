@@ -19,7 +19,7 @@
     <string name="surname_client">Surname</string>
     <string name="email_client" translatable="false">Email</string>
     <string name="phone_client">Phone</string>
-    <string name="birth_client">Birth date (YYYY-MM-DD)</string>
+    <string name="birth_client">Birth date (DD-MM-YYYY)</string>
     <string name="showphoto_client">Show photo</string>
     <string name="register_client">Add client</string>
     <string name="menu_add_professional">Add Professional</string>

@@ -4,6 +4,8 @@ import com.svalero.RosasTattoo.contract.RegisterProfessionalContract;
 import com.svalero.RosasTattoo.domain.Professional;
 import com.svalero.RosasTattoo.model.RegisterProfessionalModel;
 
+import java.time.LocalDate;
+
 public class RegisterProfessionalPresenter implements RegisterProfessionalContract.Presenter,
         RegisterProfessionalContract.Model.OnRegisterProfessionalListener {
 
@@ -28,11 +30,25 @@ public class RegisterProfessionalPresenter implements RegisterProfessionalContra
             return;
         }
 
+        if (description == null || description.trim().isEmpty()) {
+            view.showError("error_description_required");
+            return;
+        }
+
+        if (birthDate != null && !birthDate.trim().isEmpty()) {
+            try {
+                LocalDate.parse(birthDate.trim());
+            } catch (Exception e) {
+                view.showError("error_invalid_date_format");
+                return;
+            }
+        }
+
         model.registerProfessional(
                 professionalName.trim(),
-                birthDate,
-                description,
-                profilePhoto,
+                (birthDate == null || birthDate.trim().isEmpty()) ? null : birthDate.trim(),
+                description.trim(),
+                (profilePhoto == null || profilePhoto.trim().isEmpty()) ? null : profilePhoto.trim(),
                 yearsExperience,
                 booksOpened,
                 this

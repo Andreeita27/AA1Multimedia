@@ -129,6 +129,8 @@
                         android:id="@+id/etBirthDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:imeOptions="actionDone"
                         android:textColor="#ffffff"
                         android:textColorHint="#888888"/>
                 </com.google.android.material.textfield.TextInputLayout>

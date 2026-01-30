@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.contract.RegisterClientContract;
 import com.svalero.RosasTattoo.presenter.RegisterClientPresenter;
+import com.svalero.RosasTattoo.util.DateUtil;
 
 public class RegisterClientView extends BaseView implements RegisterClientContract.View {
 
@@ -41,14 +42,29 @@ public class RegisterClientView extends BaseView implements RegisterClientContra
 
         presenter = new RegisterClientPresenter(this);
 
-        btnRegister.setOnClickListener(v -> presenter.registerClient(
-                etName.getText().toString(),
-                etSurname.getText().toString(),
-                etEmail.getText().toString(),
-                etPhone.getText().toString(),
-                etBirthDate.getText().toString(),
-                cbShowPhoto.isChecked()
-        ));
+        btnRegister.setOnClickListener(v -> {
+
+            String birthText = etBirthDate.getText().toString().trim();
+            String birthIso = "";
+
+            if (!birthText.isEmpty()) {
+                try {
+                    birthIso = DateUtil.toApiFormat(birthText);
+                } catch (Exception e) {
+                    showError("error_invalid_date_format");
+                    return;
+                }
+            }
+
+            presenter.registerClient(
+                    etName.getText().toString(),
+                    etSurname.getText().toString(),
+                    etEmail.getText().toString(),
+                    etPhone.getText().toString(),
+                    birthIso,
+                    cbShowPhoto.isChecked()
+            );
+        });
     }
 
     @Override

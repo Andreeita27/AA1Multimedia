@@ -19,7 +19,7 @@
     <string name="name_client">Nombre</string>
     <string name="surname_client">Apellidos</string>
     <string name="phone_client">Teléfono</string>
-    <string name="birth_client">Día de nacimiento (AAAA-MM-DD)</string>
+    <string name="birth_client">Día de nacimiento (DD-MM-AAAA)</string>
     <string name="showphoto_client">Mostrar foto</string>
     <string name="register_client">Añadir cliente</string>
     <string name="menu_add_professional">Añadir tatuador</string>

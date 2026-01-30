@@ -15,6 +15,7 @@ import com.svalero.RosasTattoo.contract.RegisterProfessionalContract;
 import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.db.LocalImage;
 import com.svalero.RosasTattoo.presenter.RegisterProfessionalPresenter;
+import com.svalero.RosasTattoo.util.DateUtil;
 
 public class RegisterProfessionalView extends BaseView implements RegisterProfessionalContract.View {
 
@@ -47,7 +48,6 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
                 new ActivityResultContracts.OpenDocument(),
                 uri -> {
                     if (uri != null) {
-
                         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
                         try {
                             getContentResolver().takePersistableUriPermission(uri, takeFlags);
@@ -71,10 +71,20 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
 
     private void submit() {
         String name = etName.getText().toString().trim();
-        String birth = etBirth.getText().toString().trim();
+        String birthText = etBirth.getText().toString().trim();
         String desc = etDesc.getText().toString().trim();
         String photo = etPhoto.getText().toString().trim();
         boolean booksOpened = cbBooks.isChecked();
+
+        String birthIso = "";
+        if (!birthText.isEmpty()) {
+            try {
+                birthIso = DateUtil.toApiFormat(birthText);
+            } catch (Exception e) {
+                showError("error_invalid_date_format");
+                return;
+            }
+        }
 
         int years = 0;
         String yearsText = etYears.getText().toString().trim();
@@ -82,14 +92,14 @@ public class RegisterProfessionalView extends BaseView implements RegisterProfes
             try {
                 years = Integer.parseInt(yearsText);
             } catch (Exception e) {
-                Toast.makeText(this, getString(R.string.error_years_must_be_number), Toast.LENGTH_LONG).show();
+                showError("error_years_must_be_number");
                 return;
             }
         }
 
         presenter.registerProfessional(
                 name,
-                birth.isEmpty() ? null : birth,
+                birthIso.isEmpty() ? null : birthIso,
                 desc.isEmpty() ? null : desc,
                 photo.isEmpty() ? null : photo,
                 years,

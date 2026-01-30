@@ -20,6 +20,7 @@ import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.db.LocalImage;
 import com.svalero.RosasTattoo.domain.Professional;
 import com.svalero.RosasTattoo.presenter.ProfessionalListPresenter;
+import com.svalero.RosasTattoo.util.DateUtil;
 
 import java.util.List;
 
@@ -77,7 +78,6 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
                                 .upsert(new LocalImage("PROFESSIONAL", currentProfessionalId, uriString));
 
                         Toast.makeText(this, getString(R.string.image_selected), Toast.LENGTH_SHORT).show();
-
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -141,7 +141,10 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         }
 
         etName.setText(existing.getProfessionalName());
-        etBirth.setText(existing.getBirthDate());
+
+        String birthUi = DateUtil.toUiFormat(existing.getBirthDate());
+        etBirth.setText(birthUi);
+
         etDesc.setText(existing.getDescription());
         etYears.setText(String.valueOf(existing.getYearsExperience()));
         cbBooks.setChecked(existing.isBooksOpened());
@@ -174,11 +177,21 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
         dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
 
             String name = etName.getText().toString().trim();
-            String birth = etBirth.getText().toString().trim();
+            String birthText = etBirth.getText().toString().trim();
             String desc = etDesc.getText().toString().trim();
             String photo = etPhoto.getText().toString().trim();
             String yearsText = etYears.getText().toString().trim();
             boolean books = cbBooks.isChecked();
+
+            String birthIso = birthText;
+            if (!birthText.isEmpty()) {
+                try {
+                    birthIso = DateUtil.toApiFormat(birthText);
+                } catch (Exception e) {
+                    showError("error_invalid_date_format");
+                    return;
+                }
+            }
 
             int years = 0;
             if (!yearsText.isEmpty()) {
@@ -192,7 +205,7 @@ public class ProfessionalListView extends BaseView implements ProfessionalListCo
 
             Professional p = Professional.builder()
                     .professionalName(name)
-                    .birthDate(birth.isEmpty() ? null : birth)
+                    .birthDate(birthIso.isEmpty() ? null : birthIso)
                     .description(desc.isEmpty() ? null : desc)
                     .profilePhoto(photo.isEmpty() ? null : photo)
                     .booksOpened(books)

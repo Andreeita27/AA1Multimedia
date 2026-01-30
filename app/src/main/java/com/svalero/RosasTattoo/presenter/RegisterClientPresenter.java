@@ -18,7 +18,7 @@ public class RegisterClientPresenter implements RegisterClientContract.Presenter
 
     @Override
     public void registerClient(String clientName, String clientSurname, String email, String phone,
-                               String birthDate, boolean showPhoto) {
+                               String birthDateIso, boolean showPhoto) {
 
         if (clientName == null || clientName.trim().isEmpty()) {
             view.showError("error_client_name_required");
@@ -35,9 +35,9 @@ public class RegisterClientPresenter implements RegisterClientContract.Presenter
             return;
         }
 
-        if (birthDate != null && !birthDate.trim().isEmpty()) {
+        if (birthDateIso != null && !birthDateIso.trim().isEmpty()) {
             try {
-                LocalDate.parse(birthDate.trim());
+                LocalDate.parse(birthDateIso.trim());
             } catch (Exception e) {
                 view.showError("error_invalid_date_format");
                 return;
@@ -49,7 +49,7 @@ public class RegisterClientPresenter implements RegisterClientContract.Presenter
                 clientSurname.trim(),
                 email.trim(),
                 phone == null ? "" : phone.trim(),
-                birthDate == null ? "" : birthDate.trim(),
+                birthDateIso == null ? "" : birthDateIso.trim(),
                 showPhoto,
                 this
         );

@@ -5,6 +5,7 @@ import com.svalero.RosasTattoo.domain.Professional;
 import com.svalero.RosasTattoo.model.ProfessionalListModel;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ProfessionalListPresenter implements ProfessionalListContract.Presenter,
@@ -26,46 +27,13 @@ public class ProfessionalListPresenter implements ProfessionalListContract.Prese
 
     @Override
     public void registerProfessional(Professional professional) {
-        if (professional.getProfessionalName() == null || professional.getProfessionalName().trim().isEmpty()) {
-            view.showError("error_name_required");
-            return;
-        }
-        if (professional.getDescription() == null || professional.getDescription().trim().isEmpty()) {
-            view.showError("error_description_required");
-            return;
-        }
-
-        if (professional.getBirthDate() != null && !professional.getBirthDate().trim().isEmpty()) {
-            try {
-                LocalDate.parse(professional.getBirthDate().trim());
-            } catch (Exception e) {
-                view.showError("error_invalid_date_format");
-                return;
-            }
-        }
-
+        if (!isValidProfessional(professional)) return;
         model.registerProfessional(professional, this);
     }
 
     @Override
     public void updateProfessional(long id, Professional professional) {
-        if (professional.getProfessionalName() == null || professional.getProfessionalName().trim().isEmpty()) {
-            view.showError("error_name_required");
-            return;
-        }
-        if (professional.getDescription() == null || professional.getDescription().trim().isEmpty()) {
-            view.showError("error_description_required");
-            return;
-        }
-        if (professional.getBirthDate() != null && !professional.getBirthDate().trim().isEmpty()) {
-            try {
-                LocalDate.parse(professional.getBirthDate().trim());
-            } catch (Exception e) {
-                view.showError("error_invalid_date_format");
-                return;
-            }
-        }
-
+        if (!isValidProfessional(professional)) return;
         model.updateProfessional(id, professional, this);
     }
 
@@ -93,5 +61,34 @@ public class ProfessionalListPresenter implements ProfessionalListContract.Prese
     @Override
     public void onError(String messageKey) {
         view.showError(messageKey);
+    }
+
+    private boolean isValidProfessional(Professional professional) {
+        if (professional == null) {
+            view.showError("error_unknown");
+            return false;
+        }
+
+        if (professional.getProfessionalName() == null || professional.getProfessionalName().trim().isEmpty()) {
+            view.showError("error_name_required");
+            return false;
+        }
+
+        if (professional.getDescription() == null || professional.getDescription().trim().isEmpty()) {
+            view.showError("error_description_required");
+            return false;
+        }
+
+        String birth = professional.getBirthDate();
+        if (birth != null && !birth.trim().isEmpty()) {
+            try {
+                LocalDate.parse(birth.trim(), DateTimeFormatter.ISO_LOCAL_DATE);
+            } catch (Exception e) {
+                view.showError("error_invalid_date_format");
+                return false;
+            }
+        }
+
+        return true;
     }
 }
