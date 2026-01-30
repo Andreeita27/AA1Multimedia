@@ -1,9 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme._62RosasTattoo" parent="Theme.Material3.DayNight">
-    <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- 🔲 Fondo ActionBar -->
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+
+        <!-- 🟡 Texto del ActionBar -->
+        <item name="android:textColorPrimary">#b5a16c</item>
+
+        <!-- 🟡 Iconos / overflow -->
+        <item name="colorControlNormal">#b5a16c</item>
+        <item name="colorControlActivated">#b5a16c</item>
+
+        <!-- 🔲 Fondo del menú desplegable -->
+        <item name="android:popupMenuStyle">@style/PopupMenuDark</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:windowLightStatusBar">false</item>
+
     </style>
 
-    <style name="Theme._62RosasTattoo" parent="Base.Theme._62RosasTattoo" />
+    <style name="Theme._62RosasTattoo" parent="Base.Theme._62RosasTattoo"/>
+
+    <!-- 🔽 Estilo del desplegable -->
+    <style name="PopupMenuDark" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">#000000</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
 </resources>

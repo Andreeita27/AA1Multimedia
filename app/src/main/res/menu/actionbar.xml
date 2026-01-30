@@ -18,13 +18,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_saved"
+        android:id="@+id/menu_favorite"
         android:title="@string/menu_favorite"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_map"
-        android:title="@string/menu_map"
         app:showAsAction="never" />
 
     <item

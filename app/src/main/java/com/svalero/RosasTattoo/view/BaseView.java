@@ -3,6 +3,7 @@ package com.svalero.RosasTattoo.view;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +15,11 @@ public class BaseView extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -32,12 +38,8 @@ public class BaseView extends AppCompatActivity {
             startActivity(new Intent(this, ProfessionalListView.class));
             return true;
 
-        } else if (id == R.id.menu_saved) {
-            startActivity(new Intent(this, SavedTattooListView.class));
-            return true;
-
-        } else if (id == R.id.menu_map) {
-            startActivity(new Intent(this, ConventionMapView.class));
+        } else if (id == R.id.menu_favorite) {
+            startActivity(new Intent(this, FavoriteTattooListView.class));
             return true;
 
         } else if (id == R.id.menu_client) {
@@ -46,5 +48,27 @@ public class BaseView extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected String resolveMessage(String messageKey) {
+        if (messageKey == null) {
+            return getString(R.string.error_unknown);
+        }
+
+        int resId = getResources().getIdentifier(
+                messageKey,
+                "string",
+                getPackageName()
+        );
+
+        if (resId != 0) {
+            return getString(resId);
+        }
+
+        return messageKey;
+    }
+
+    protected void showToast(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
     }
 }

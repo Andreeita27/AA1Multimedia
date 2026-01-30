@@ -1,5 +1,6 @@
 package com.svalero.RosasTattoo.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -8,45 +9,65 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.svalero.RosasTattoo.R;
 import com.svalero.RosasTattoo.adapter.TattooAdapter;
-import com.svalero.RosasTattoo.api.RosasTattooApi;
-import com.svalero.RosasTattoo.api.RosasTattooApiInterface;
+import com.svalero.RosasTattoo.contract.TattooListContract;
+import com.svalero.RosasTattoo.db.AppDatabase;
 import com.svalero.RosasTattoo.domain.Tattoo;
+import com.svalero.RosasTattoo.presenter.TattooListPresenter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class TattooListView extends BaseView implements TattooListContract.View {
 
-public class TattooListView extends BaseView {
+    private RecyclerView recyclerView;
+    private TattooAdapter tattooAdapter;
+
+    private TattooListContract.Presenter presenter;
+
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tattoo_list_view);
 
-        RecyclerView rv = findViewById(R.id.rvTattoos);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.menu_showroom));
+        }
 
-        TattooAdapter adapter = new TattooAdapter();
-        rv.setAdapter(adapter);
+        recyclerView = findViewById(R.id.rvTattoos);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        RosasTattooApiInterface api = RosasTattooApi.buildInstance();
-        api.getTattoos().enqueue(new Callback<List<Tattoo>>() {
-            @Override
-            public void onResponse(Call<List<Tattoo>> call, Response<List<Tattoo>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    adapter.setData(response.body());
-                } else {
-                    Toast.makeText(TattooListView.this, "HTTP error: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
+        db = AppDatabase.getInstance(this);
 
-            @Override
-            public void onFailure(Call<List<Tattoo>> call, Throwable t) {
-                Toast.makeText(TattooListView.this, "Connection error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        tattooAdapter = new TattooAdapter(db);
+        recyclerView.setAdapter(tattooAdapter);
 
+        presenter = new TattooListPresenter(this);
+        presenter.loadTattoos();
+
+        findViewById(R.id.btnAddTattoo).setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterTattooView.class)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadTattoos();
+    }
+
+    @Override
+    public void showTattoos(List<Tattoo> tattoos) {
+        tattooAdapter.setData(tattoos);
+    }
+
+    @Override
+    public void showMessage(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(String messageKey) {
+        Toast.makeText(this, resolveMessage(messageKey), Toast.LENGTH_LONG).show();
     }
 }

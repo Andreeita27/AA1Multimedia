@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#000000">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/professional_information"
+            android:textColor="#b5a16c"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etProfessionalName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_professional"
+            android:textColor="#ffffff"
+            android:textColorHint="#888888"
+            android:backgroundTint="#b5a16c"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etProfessionalBirthDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/birth_professional"
+            android:textColor="#ffffff"
+            android:textColorHint="#888888"
+            android:backgroundTint="#b5a16c"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etProfessionalDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description_professional"
+            android:textColor="#ffffff"
+            android:textColorHint="#888888"
+            android:backgroundTint="#b5a16c"
+            android:minLines="3"
+            android:gravity="top"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etProfessionalPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/photo_professional"
+            android:textColor="#ffffff"
+            android:textColorHint="#888888"
+            android:backgroundTint="#b5a16c"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etProfessionalYears"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/experience_professional"
+            android:textColor="#ffffff"
+            android:textColorHint="#888888"
+            android:backgroundTint="#b5a16c"
+            android:inputType="number"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="#121212">
+
+            <CheckBox
+                android:id="@+id/cbProfessionalBooksOpened"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/books_opened"
+                android:textColor="#ffffff"
+                android:buttonTint="#b5a16c" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
