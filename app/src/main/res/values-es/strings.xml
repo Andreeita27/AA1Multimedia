@@ -78,7 +78,7 @@
     <string name="error_load_tattoos">No se ha podido cargar la lista de tatuajes</string>
     <string name="error_name_required">El nombre es obligatorio</string>
     <string name="error_description_required">La descripción es obligatoria</string>
-    <string name="error_invalid_date_format">Fecha inválida (AAAA-MM-DD)</string>
+    <string name="error_invalid_date_format">Fecha inválida (DD-MM-AAAA)</string>
     <string name="error_client_name_required">El nombre es obligatorio</string>
     <string name="error_client_surname_required">El apellido es obligatorio</string>
     <string name="error_client_email_required">El email es obligatorio</string>

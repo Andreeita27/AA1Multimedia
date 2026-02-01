@@ -78,7 +78,7 @@
     <string name="error_load_tattoos">Unable to load the tattoo list</string>
     <string name="error_name_required">Name is required</string>
     <string name="error_description_required">Description is required</string>
-    <string name="error_invalid_date_format">Invalid format date (YYYY-MM-DD)</string>
+    <string name="error_invalid_date_format">Invalid format date (DD-MM-YYYY)</string>
     <string name="error_client_name_required">Name is required</string>
     <string name="error_client_surname_required">Surname is required</string>
     <string name="error_client_email_required">Email is required</string>
